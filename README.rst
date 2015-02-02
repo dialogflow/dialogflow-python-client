@@ -1,0 +1,1 @@
+The API.AI iOS SDK makes it easy to integrate speech recognition with API.AI natural language processing API on iOS devices.
