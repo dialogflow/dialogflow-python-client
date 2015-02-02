@@ -21,6 +21,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+*.pyc
+__pycache__
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -52,3 +54,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#MacOS
+.DS_Store
+.localized%  
