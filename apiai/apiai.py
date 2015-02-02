@@ -6,8 +6,18 @@ try: # Python 3
 except ImportError:
     from httplib import HTTPConnection, HTTPSConnection
 
+import sys
 import json
 import uuid
+
+PY3 = sys.version_info[0] == 3
+
+if PY3:
+    def b(s):
+        return s.encode("latin-1")
+else:
+    def b(s):
+        return s
 
 class ApiAI(object):
     """docstring for ApiAI"""
@@ -51,6 +61,8 @@ class Request(object):
 
     def _prepare_request(self):
         self._connection = self.__connection__class(self.url)
+
+        self._connection.debuglevel = 999
 
     def connect(self):
         self._connection.connect()
@@ -141,13 +153,18 @@ class VoiceRequest(Request):
     def send(self, chunk):
         parts = []
 
-        parts.append("%x" % len(chunk))
-        parts.append(chunk)
+        parts.append('%x' % len(chunk))
+
+        if PY3:
+            parts.append(chunk.decode('latin-1'))
+        else:
+            parts.append(chunk)
+            
         parts.append('')
 
         newChunk = '\r\n'.join(parts)
 
-        super(VoiceRequest, self).send(newChunk)
+        super(VoiceRequest, self).send(b(newChunk))
 
     def _prepare_headers(self):
         self.boundary = ('--------{0}'.format(uuid.uuid4().hex)).encode('utf-8')
@@ -184,5 +201,5 @@ class VoiceRequest(Request):
         return "\r\n--%s--\r\n" % self.boundary
 
     def beforegetresponce(self):
-        self._connection.send('0\r\n\r\n')
+        self._connection.send(b('0\r\n\r\n'))
         
