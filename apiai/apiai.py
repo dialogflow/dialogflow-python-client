@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+apiai
+~~~~~~~~~~~~~~~~
+This module provides a ApiAI class to manage requests.
+"""
+
 try: # Python 3
     from http.client import HTTPConnection, HTTPSConnection
 except ImportError:
@@ -20,11 +26,27 @@ else:
         return s
 
 class ApiAI(object):
-    """docstring for ApiAI"""
+    """Main andpoint for using API
+
+    Provides request.
+
+    Basic Usage::
+
+        >>> import apiai
+        >>> ai = apiai.ApiAI(<CLIENT_ACCESS_TOKEN>, <SUBSCRIBTION_KEY>)
+        >>> text_request = ai.text_request()
+        >>> ...
+    """
 
     __connection__class = HTTPSConnection
 
     def __init__(self, client_access_token, subscribtion_key):
+        """Construct a :class:`ApiAI <ApiAI>`
+
+        :param client_access_token: client access token provided by http://api.ai/
+        :param subscribtion_key: subscribtion key provided by http://api.ai/
+        """
+
         super(ApiAI, self).__init__()
         self.client_access_token = client_access_token
         self.subscribtion_key = subscribtion_key
@@ -32,14 +54,28 @@ class ApiAI(object):
         self.url = 'api.api.ai'
 
     def voice_request(self):
+        """Construct a :class:`VoiceRequest <VoiceRequest>`, prepare it.
+        Returns :class:`VoiceRequest <VoiceRequest>` object.
+        """
         return VoiceRequest(self.client_access_token, self.subscribtion_key, self.url, self.__connection__class)
 
     def text_request(self):
+        """Construct a :class:`VoiceRequest <TextRequest>`, prepare it.
+        Returns :class:`TextRequest <TextRequest>` object.
+        """
+
         return TextRequest(self.client_access_token, self.subscribtion_key, self.url, self.__connection__class)
 
 
 class Request(object):
-    """docstring for Request"""
+    """Abstract request class"""
+
+    __attrs__ = [
+        'lang',
+        'resetContexts',
+        'contexts',
+        'sessionId',
+    ]
 
     __connection__class = None
 
@@ -64,7 +100,7 @@ class Request(object):
 
         self._connection.debuglevel = 999
 
-    def connect(self):
+    def _connect(self):
         self._connection.connect()
 
         self._connection.putrequest('POST', '/v1/query', skip_accept_encoding=1)
@@ -89,24 +125,31 @@ class Request(object):
             self.send(begin.encode('utf-8'))
 
     def send(self, chunk):
+        """Send a givet data chunk.
+        :param chunk: data chunk.
+        """
+
         if self._connection.sock is None:
-            self.connect()
+            self._connect()
 
         self._connection.send(chunk)
 
-    def beforegetresponce(self):
+    def _beforegetresponce(self):
         pass
 
     def getresponse(self):
+        """Send all data and wait for response.
+        """
+
         if self._connection.sock is None:
-            self.connect()
+            self._connect()
 
         end = self._prepage_end_request_data()
 
         if not end is None:
             self.send(end.encode('utf-8'))
 
-        self.beforegetresponce()
+        self._beforegetresponce()
 
         return self._connection.getresponse()
 
@@ -121,9 +164,21 @@ class Request(object):
 
 
 class TextRequest(Request):
-    """docstring for TextRequest"""
+    """TextRequest request class
+
+    Send simple text reques.
+    Query can be string or array of strings.
+
+    """
+
+    __attrs__ = [
+        'query',
+    ]
+
     def __init__(self, client_access_token, subscribtion_key, url, __connection__class):
         super(TextRequest, self).__init__(client_access_token, subscribtion_key, url, __connection__class)
+
+        #: Query parameter, can be string or array of strings.
         self.query = None
 
     def _prepare_headers(self):
@@ -145,12 +200,35 @@ class TextRequest(Request):
 
 
 class VoiceRequest(Request):
-    """docstring for VoiceRequest"""
+    """VoiceRequest request class
+
+    Send voice data by chunks.
+
+    Basic Usage::
+
+        >>> ...
+        >>> voice_request = ai.text_request()
+        >>> bytessize = 2048
+        >>>
+        >>> with open('log.raw', 'rb') as f:
+        >>>     data = f.read(bytessize)
+        >>>     while data:
+        >>>         request.send(data)
+        >>>         data = f.read(bytessize)
+        >>>
+        >>> request.getresponse()
+        <JSON response>
+    """
+
     def __init__(self, client_access_token, subscribtion_key, url, __connection__class):
         super(VoiceRequest, self).__init__(client_access_token, subscribtion_key, url, __connection__class)
         self.query = None
 
     def send(self, chunk):
+        """Send a givet data chunk.
+        :param chunk: data chunk.
+        """
+
         parts = []
 
         parts.append('%x' % len(chunk))
@@ -173,7 +251,6 @@ class VoiceRequest(Request):
             'Content-Type': 'multipart/form-data; boundary=%s' % self.boundary,
             'Transfer-Encoding': 'chunked',
             'Connection': 'keep-alive',
-            'Expect': '100-continue'
             } 
 
     def _prepage_begin_request_data(self):
@@ -200,6 +277,6 @@ class VoiceRequest(Request):
     def _prepage_end_request_data(self):
         return "\r\n--%s--\r\n" % self.boundary
 
-    def beforegetresponce(self):
+    def _beforegetresponce(self):
         self._connection.send(b('0\r\n\r\n'))
         
