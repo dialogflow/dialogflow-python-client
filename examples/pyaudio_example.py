@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import apiai
+try:
+    import apiai
+except ImportError:
+    sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+    import apiai
 
 import pyaudio
 
