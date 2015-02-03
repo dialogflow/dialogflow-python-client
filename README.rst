@@ -4,7 +4,7 @@ apiai: Python SDK for `API.AI <http://api.ai>`_
 Overview
 --------
 
-The API.AI Знерщт SDK makes it easy to integrate speech recognition with API.AI natural language processing API. API.AI allows using voice commands and integration with dialog scenarios defined for a particular agent in API.AI.
+The API.AI Python SDK makes it easy to integrate speech recognition with API.AI natural language processing API. API.AI allows using voice commands and integration with dialog scenarios defined for a particular agent in API.AI.
 
 Prerequsites
 --------
@@ -27,8 +27,9 @@ Running examples
 Features
 --------
 
-- First
-- Second
+- Speech Recognition.
+- Voice Activity Detection.
+- Natural Language Processing.
 
 Installation
 ------------

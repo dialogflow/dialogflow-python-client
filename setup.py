@@ -1,12 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
+import os
+
 import apiai
 
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
+
+if sys.argv[-1] == 'publish':
+  os.system('python setup.py sdist upload')
+  sys.exit()
 
 packages = [
     'apiai',        
@@ -20,16 +27,20 @@ requires = [
 with open('README.rst', 'r') as f:
   readme = f.read()
 
-setup(name='apiai',
+with open('HISTORY.rst', 'r', 'utf-8') as f:
+  history = f.read()
+
+setup(name=apiai.__version__,
       version='1.0',
       description='The API.AI iOS SDK makes it easy to integrate speech recognition with API.AI natural language processing API on iOS devices.',
-      long_description=readme,
+      long_description=readme + '\n\n' + history,
       author='Dmitriy Kuragin',
       author_email='kuragin@speaktoit.com',
       license='Apache 2.0',
       url='https://api.ai/',
       packages=packages,
       install_requires=requires,
+      package_data={'':['LICENSE']},
       classifiers=(
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
@@ -41,4 +52,4 @@ setup(name='apiai',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4'
       ),
-     )
+)
