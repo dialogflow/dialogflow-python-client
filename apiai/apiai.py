@@ -14,6 +14,9 @@ except ImportError:
 import sys
 import json
 import uuid
+import urllib
+
+DEFAULT_VERSION = '20150204'
 
 PY3 = sys.version_info[0] == 3
 
@@ -39,7 +42,7 @@ class ApiAI(object):
 
     __connection__class = HTTPSConnection
 
-    def __init__(self, client_access_token, subscribtion_key):
+    def __init__(self, client_access_token, subscribtion_key, version=DEFAULT_VERSION):
         """Construct a :class:`ApiAI <ApiAI>`
 
         :param client_access_token: client access token provided by http://api.ai/
@@ -51,20 +54,27 @@ class ApiAI(object):
         self.subscribtion_key = subscribtion_key
 
         self.url = 'api.api.ai'
+        self.version = version
+
+        self.session_id = uuid.uuid4().hex
 
     def voice_request(self):
         """Construct a :class:`VoiceRequest <VoiceRequest>`, prepare it.
         Returns :class:`VoiceRequest <VoiceRequest>` object.
         """
-        return VoiceRequest(self.client_access_token, self.subscribtion_key, self.url, self.__connection__class)
+
+        request = VoiceRequest(self.client_access_token, self.subscribtion_key, self.url, self.__connection__class, self.version, self.session_id)
+
+        return request
 
     def text_request(self):
         """Construct a :class:`VoiceRequest <TextRequest>`, prepare it.
         Returns :class:`TextRequest <TextRequest>` object.
         """
 
-        return TextRequest(self.client_access_token, self.subscribtion_key, self.url, self.__connection__class)
+        request = TextRequest(self.client_access_token, self.subscribtion_key, self.url, self.__connection__class, self.version, self.session_id)
 
+        return request
 
 class Request(object):
     """Abstract request class"""
@@ -83,8 +93,11 @@ class Request(object):
     contexts = []
     sessionId = None
 
-    def __init__(self, client_access_token, subscribtion_key, url, __connection__class):
+    def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
         super(Request, self).__init__()
+
+        self.version = version
+        self.session_id = session_id
 
         self.__connection__class = __connection__class
 
@@ -94,15 +107,24 @@ class Request(object):
 
         self._prepare_request()
 
-    def _prepare_request(self):
+    def _prepare_request(self, debug=False):
         self._connection = self.__connection__class(self.url)
 
-        self._connection.debuglevel = 999
+        if debug:
+            self._connection.debuglevel = 1
 
     def _connect(self):
         self._connection.connect()
 
-        self._connection.putrequest('POST', '/v1/query', skip_accept_encoding=1)
+        path = '/v1/query'
+
+        parameters = {
+            'v': self.version
+        }
+
+        full_path = path + '?' + urllib.urlencode(parameters)
+
+        self._connection.putrequest('POST', full_path, skip_accept_encoding=1)
 
         headers = {
             'Accept': 'application/json',
@@ -174,8 +196,8 @@ class TextRequest(Request):
         'query',
     ]
 
-    def __init__(self, client_access_token, subscribtion_key, url, __connection__class):
-        super(TextRequest, self).__init__(client_access_token, subscribtion_key, url, __connection__class)
+    def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
+        super(TextRequest, self).__init__(client_access_token, subscribtion_key, url, __connection__class, version, session_id)
 
         #: Query parameter, can be string or array of strings.
         self.query = None
@@ -193,6 +215,9 @@ class TextRequest(Request):
         data = {
             'query': self.query,
             'lang': self.lang,
+            'sessionId': self.session_id,
+            'contexts': self.contexts,
+            'resetContexts': self.resetContexts
             }
 
         return json.dumps(data)
@@ -219,8 +244,8 @@ class VoiceRequest(Request):
         <JSON response>
     """
 
-    def __init__(self, client_access_token, subscribtion_key, url, __connection__class):
-        super(VoiceRequest, self).__init__(client_access_token, subscribtion_key, url, __connection__class)
+    def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
+        super(VoiceRequest, self).__init__(client_access_token, subscribtion_key, url, __connection__class, version, session_id)
         self.query = None
 
     def send(self, chunk):
@@ -261,7 +286,9 @@ class VoiceRequest(Request):
         data += json.dumps(
                 {
                 'lang': self.lang or 'en',
-                'sessionId': 'ce37f7dddb021aa51f856f1f8c548af7'
+                'sessionId': self.session_id,
+                'contexts': self.contexts,
+                'resetContexts': self.resetContexts,
                 }
             )
 
