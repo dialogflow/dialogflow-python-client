@@ -6,6 +6,8 @@ python:
   - "3.3"
   - "3.4"
   - "pypy"
+virtualenv:
+  system_site_packages: true
 before_install:
   - apt-get install python-numpy
   - apt-get install python-scipy
