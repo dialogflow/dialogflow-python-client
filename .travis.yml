@@ -6,13 +6,15 @@ python:
   - "3.3"
   - "3.4"
   - "pypy"
+virtualenv:
+  system_site_packages: true
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq libatlas-dev libatlas-base-dev liblapack-dev gfortran
   - sudo apt-get install -qq libgmp-dev libmpfr-dev
   - sudo apt-get install -qq python-numpy python-scipy
-install:
-  - pip install -r requirements.txt
+# install:
+  # - pip install -r requirements.txt
 notifications:
   email: false
 script: make test
