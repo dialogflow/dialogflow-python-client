@@ -14,7 +14,11 @@ except ImportError:
 import sys
 import json
 import uuid
-import urllib
+
+try:
+    import urllib.parse
+except ImportError:
+    import urllib
 
 DEFAULT_VERSION = '20150204'
 
@@ -122,7 +126,12 @@ class Request(object):
             'v': self.version
         }
 
-        full_path = path + '?' + urllib.urlencode(parameters)
+        full_path = None
+
+        try:
+            full_path = path + '?' + urllib.urlencode(parameters)
+        except AttributeError:
+            full_path = path + '?' + urllib.parse.urlencode(parameters)
 
         self._connection.putrequest('POST', full_path, skip_accept_encoding=1)
 

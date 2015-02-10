@@ -25,7 +25,7 @@ class TestActions(unittest.TestCase):
         text_requset.resetContexts = resetContexts
 
         response = text_requset.getresponse()
-        return json.loads(response.read())
+        return json.loads(response.read().decode())
 
     def test_hello(self):
         query = 'Hello'
