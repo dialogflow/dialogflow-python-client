@@ -6,11 +6,8 @@ python:
   - "3.3"
   - "3.4"
   - "pypy"
-virtualenv:
-  system_site_packages: truex
 before_install:
-  - sudo apt-get install python-numpy
-  - sudo apt-get install python-scipy
+  - sudo apt-get install python-numpy python-scipy
 install:
   - pip install -r requirements.txt
 notifications:
