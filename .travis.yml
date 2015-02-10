@@ -7,10 +7,10 @@ python:
   - "3.4"
   - "pypy"
 virtualenv:
-  system_site_packages: true
+  system_site_packages: truex
 before_install:
-  - apt-get install python-numpy
-  - apt-get install python-scipy
+  - sudo apt-get install python-numpy
+  - sudo apt-get install python-scipy
 install:
   - pip install -r requirements.txt
 notifications:
