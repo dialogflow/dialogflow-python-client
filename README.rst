@@ -1,6 +1,10 @@
 apiai: Python SDK for `API.AI <http://api.ai>`_
 =========================
 
+.. image:: https://travis-ci.org/api-ai/api-ai-python.svg
+    :target: https://travis-ci.org/api-ai/api-ai-python
+
+
 Overview
 --------
 
