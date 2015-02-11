@@ -30,8 +30,8 @@ with open('README.rst', 'r') as f:
 with open('HISTORY.rst', 'r') as f:
   history = f.read()
 
-setup(name=apiai.__version__,
-      version='1.0',
+setup(name='apiai',
+      version=apiai.__version__,
       description='The API.AI iOS SDK makes it easy to integrate speech recognition with API.AI natural language processing API on iOS devices.',
       long_description=readme + '\n\n' + history,
       author='Dmitriy Kuragin',

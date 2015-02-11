@@ -5,8 +5,11 @@ import sys
 import os
 import json
 
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
-import apiai
+try:
+    import apiai
+except ImportError:
+    sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+    import apiai
 
 CLIENT_ACCESS_TOKEN = '09604c7f91ce4cd8a4ede55eb5340b9d'
 SUBSCRIBTION_KEY = '4c91a8e5-275f-4bf0-8f94-befa78ef92cd'
