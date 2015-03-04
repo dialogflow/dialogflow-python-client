@@ -14,6 +14,8 @@ except ImportError:
 import sys
 import json
 import uuid
+from time import gmtime
+from time import strftime
 
 try:
     import urllib.parse
@@ -88,6 +90,7 @@ class Request(object):
         'resetContexts',
         'contexts',
         'sessionId',
+        'timezone',
     ]
 
     __connection__class = None
@@ -96,6 +99,7 @@ class Request(object):
     resetContexts = False
     contexts = []
     sessionId = None
+    timezone = None
 
     def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
         super(Request, self).__init__()
@@ -108,6 +112,8 @@ class Request(object):
         self.client_access_token = client_access_token
         self.subscribtion_key = subscribtion_key
         self.url = url
+
+        self.timezone = strftime("%z", gmtime())
 
         self._prepare_request()
 
@@ -226,6 +232,7 @@ class TextRequest(Request):
             'lang': self.lang,
             'sessionId': self.session_id,
             'contexts': self.contexts,
+            'timezone': self.timezone,
             'resetContexts': self.resetContexts
             }
 
@@ -297,6 +304,7 @@ class VoiceRequest(Request):
                 'lang': self.lang or 'en',
                 'sessionId': self.session_id,
                 'contexts': self.contexts,
+                'timezone': self.timezone,
                 'resetContexts': self.resetContexts,
                 }
             )
