@@ -1,4 +1,4 @@
-apiai: Python SDK for `API.AI <http://api.ai>`_
+api.ai: Python SDK for `API.AI <http://api.ai>`_
 =========================
 
 .. image:: https://badge.fury.io/py/apiai.svg
