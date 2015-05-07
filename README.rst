@@ -1,4 +1,4 @@
-apiai: Python SDK for `API.AI <http://api.ai>`_
+api.ai: Python SDK for `API.AI <http://api.ai>`_
 =========================
 
 .. image:: https://badge.fury.io/py/apiai.svg
@@ -52,6 +52,15 @@ or install it from repo:
 .. code-block:: bash
 
     $ pip install https://github.com/api-ai/api-ai-python.git
+    
+You might run into problems because some dependencies in your python environment are missing. You need to install numpy (which is available in alomost all package managers) and `scipy <http://www.scipy.org/install.html>`_. For running the examples you also need python audio.
+
+In ubunutu the following will do the job:
+
+.. code-block:: bash
+
+    $ apt-get install python-pyaudio python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose python-pip
+    $ pip install apiai
 
 Documentation
 -------------
