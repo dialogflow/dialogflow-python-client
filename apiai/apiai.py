@@ -7,9 +7,9 @@ This module provides a ApiAI class to manage requests.
 """
 
 try: # Python 3
-    from http.client import HTTPConnection, HTTPSConnection
+    from http.client import HTTPSConnection
 except ImportError:
-    from httplib import HTTPConnection, HTTPSConnection
+    from httplib import HTTPSConnection
 
 import sys
 import json
@@ -22,7 +22,7 @@ try:
 except ImportError:
     import urllib
 
-DEFAULT_VERSION = '20150204'
+DEFAULT_VERSION = '20150415'
 
 PY3 = sys.version_info[0] == 3
 

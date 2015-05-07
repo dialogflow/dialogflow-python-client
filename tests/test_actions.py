@@ -40,7 +40,7 @@ class TestActions(unittest.TestCase):
         self.assertEqual(result['resolvedQuery'].lower(), query.lower())
 
         self.assertEqual(result['action'], 'greeting')
-        self.assertEqual(result['speech'], 'Hi! How are you?')
+        self.assertEqual(result['fulfillment']['speech'], 'Hi! How are you?')
 
     def test_you_name(self):
         query = 'What is your name?'
