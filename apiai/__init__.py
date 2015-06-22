@@ -4,7 +4,7 @@ __author__ = "Dmitriy Kuragin"
 __copyright__ = "Copyright 2015 api.ai"
 __contributors__ = []
 __license__ = "Apache 2.0"
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 __all__ = ['apiai', 'ApiAI', 'Request', 'TextRequest', 'VoiceRequest', 'VAD', 'Resampler', 'Serializable', 'Entry', 'Entity']
 
