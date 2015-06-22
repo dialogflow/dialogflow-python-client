@@ -82,6 +82,41 @@ class ApiAI(object):
 
         return request
 
+class Serializable(object):
+    """Abstract serializable class"""
+    def to_dict(self):
+        raise NotImplementedError()
+        
+
+class Entry(Serializable):
+    """User entry for entity"""
+    def __init__(self, value, synonyms):
+        super(Entry, self).__init__()
+
+        self.value = value
+        self.synonyms = synonyms
+
+    def to_dict(self):
+        return {
+            'value': self.value,
+            'synonyms': self.synonyms
+        }
+        
+
+class Entity(Serializable):
+    """User entity for request."""
+    def __init__(self, name, entries):
+        super(Entity, self).__init__()
+
+        self.name = name
+        self.entries = entries
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'entries': map(lambda x: x.to_dict(), self.entries)
+        }
+
 class Request(object):
     """Abstract request class"""
 
@@ -91,6 +126,7 @@ class Request(object):
         'contexts',
         'sessionId',
         'timezone',
+        'entities',
     ]
 
     __connection__class = None
@@ -100,6 +136,7 @@ class Request(object):
     contexts = []
     sessionId = None
     timezone = None
+    entities = None
 
     def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
         super(Request, self).__init__()
@@ -116,6 +153,11 @@ class Request(object):
         self.timezone = strftime("%z", gmtime())
 
         self._prepare_request()
+
+    def _prepare_entities(self):
+        if self.entities: 
+            return map(lambda x: x.to_dict(), self.entities)
+        return None
 
     def _prepare_request(self, debug=False):
         self._connection = self.__connection__class(self.url)
@@ -233,7 +275,8 @@ class TextRequest(Request):
             'sessionId': self.session_id,
             'contexts': self.contexts,
             'timezone': self.timezone,
-            'resetContexts': self.resetContexts
+            'resetContexts': self.resetContexts,
+            'entities': self._prepare_entities(),
             }
 
         return json.dumps(data)
@@ -306,6 +349,7 @@ class VoiceRequest(Request):
                 'contexts': self.contexts,
                 'timezone': self.timezone,
                 'resetContexts': self.resetContexts,
+                'entities': self._prepare_entities()
                 }
             )
 

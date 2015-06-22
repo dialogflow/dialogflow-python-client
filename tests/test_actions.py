@@ -18,7 +18,7 @@ class TestActions(unittest.TestCase):
     def setUp(self):
         self.ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN, SUBSCRIBTION_KEY)
 
-    def load_text_request_with_quiery(self, query=None, resetContexts=False):
+    def load_text_request_with_quiery(self, query=None, resetContexts=False, entities=None):
         if not query:
             self.assertTrue(False)
 
@@ -26,6 +26,8 @@ class TestActions(unittest.TestCase):
         text_requset.query = query
 
         text_requset.resetContexts = resetContexts
+
+        text_requset.entities = entities
 
         response = text_requset.getresponse()
         return json.loads(response.read().decode())
@@ -56,7 +58,7 @@ class TestActions(unittest.TestCase):
         context = result['contexts'][0]
 
         self.assertEqual(context['name'], 'name_question')
-        self.assertTrue(len(context['parameters']) == 1)
+        self.assertTrue(len(context['parameters']) == 2)
 
         parameters = context['parameters']
         param = parameters.get('param', None)
@@ -72,6 +74,23 @@ class TestActions(unittest.TestCase):
         hello_without_context = self.load_text_request_with_quiery('hello', resetContexts=True)
 
         self.assertTrue(len(hello_without_context['result']['contexts']) == 0)
+
+    def test_user_entities(self):
+        query = 'hi nori'
+
+        entities = [
+            apiai.Entity(
+                'dwarfs', 
+                [
+                    apiai.Entry('Ori', ['ori', 'Nori']),
+                    apiai.Entry('bifur', ['Bofur', 'Bombur']),
+                ]
+                )
+        ]
+
+        response = self.load_text_request_with_quiery(query, entities=entities)
+        self.assertTrue(response['result']['metadata']['intentName'] == 'hi dwarf')
+        self.assertTrue(response['result']['fulfillment']['speech'] == 'hi Bilbo, I am Ori')
 
 if __name__ == '__main__':
     unittest.main()
