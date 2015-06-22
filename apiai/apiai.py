@@ -114,7 +114,7 @@ class Entity(Serializable):
     def to_dict(self):
         return {
             'name': self.name,
-            'entries': map(lambda x: x.to_dict(), self.entries)
+            'entries': list(map(lambda x: x.to_dict(), self.entries))
         }
 
 class Request(object):
@@ -156,7 +156,7 @@ class Request(object):
 
     def _prepare_entities(self):
         if self.entities: 
-            return map(lambda x: x.to_dict(), self.entities)
+            return list(map(lambda x: x.to_dict(), self.entities))
         return None
 
     def _prepare_request(self, debug=False):
