@@ -17,10 +17,10 @@ import scipy.io.wavfile as wav
 from codecs import open
 
 CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
-SUBSCRIBTION_KEY = 'YOUR_SUBSCRIPTION_KEY' 
+SUBSCRIPTION_KEY = 'YOUR_SUBSCRIPTION_KEY' 
 
 def main():
-    ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN, SUBSCRIBTION_KEY)
+    ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN, SUBSCRIPTION_KEY)
 
     request = ai.voice_request()
 

@@ -28,7 +28,7 @@ Running examples
 .. code-block:: python
 
     >>> CLIENT_ACCESS_TOKEN = '<YOUR_CLIENT_ACCESS_TOKEN>'
-    >>> SUBSCRIBTION_KEY = '<YOUR_SUBSCRIBTION_KEY>' 
+    >>> SUBSCRIPTION_KEY = '<YOUR_SUBSCRIPTION_KEY>' 
     ...
 
 Features

@@ -41,7 +41,7 @@ class ApiAI(object):
     Basic Usage::
 
         >>> import apiai
-        >>> ai = apiai.ApiAI(<CLIENT_ACCESS_TOKEN>, <SUBSCRIBTION_KEY>)
+        >>> ai = apiai.ApiAI(<CLIENT_ACCESS_TOKEN>, <SUBSCRIPTION_KEY>)
         >>> text_request = ai.text_request()
         >>> ...
     """
