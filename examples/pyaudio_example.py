@@ -29,6 +29,8 @@ def main():
 
     request = ai.voice_request()
 
+    request.lang = 'en' # optional, default value equal 'en'
+
     def callback(in_data, frame_count, time_info, status):
         frames, data = resampler.resample(in_data, frame_count)
         state = vad.processFrame(frames)

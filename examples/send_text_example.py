@@ -20,6 +20,8 @@ def main():
 
     request = ai.text_request()
 
+    request.lang = 'en' # optional, default value equal 'en'
+
     request.query = "Hello"
 
     response = request.getresponse()

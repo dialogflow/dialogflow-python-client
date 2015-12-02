@@ -24,6 +24,8 @@ def main():
 
     request = ai.voice_request()
 
+    request.lang = 'en' # optional, default value equal 'en'
+
     bytessize = 2048
 
     with open('log.raw', 'rb') as f:
