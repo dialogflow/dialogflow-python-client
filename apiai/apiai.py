@@ -101,7 +101,13 @@ class ApiAI(object):
         Returns `VoiceRequest` object.
         """
 
-        request = VoiceRequest(self.client_access_token, self.subscribtion_key, self.url, self.__connection__class, self.version, self.session_id)
+        request = VoiceRequest(
+            self.client_access_token, 
+            self.subscribtion_key, 
+            self._url, 
+            self.__connection__class, 
+            self._version, 
+            self.session_id)
 
         return request
 
@@ -112,7 +118,13 @@ class ApiAI(object):
         Returns `TextRequest` object.
         """
 
-        request = TextRequest(self.client_access_token, self.subscribtion_key, self.url, self.__connection__class, self.version, self.session_id)
+        request = TextRequest(
+            self.client_access_token, 
+            self.subscribtion_key, 
+            self._url, 
+            self.__connection__class, 
+            self._version, 
+            self.session_id)
 
         return request
 
