@@ -3,7 +3,7 @@
 """
 apiai
 ~~~~~~~~~~~~~~~~
-This module provides a ApiAI class to manage requests.
+This module provides a ApiAI classes to manage requests.
 """
 
 try: # Python 3
@@ -22,7 +22,7 @@ try:
 except ImportError:
     import urllib
 
-DEFAULT_VERSION = '20150415'
+DEFAULT_VERSION = '20150910'
 
 PY3 = sys.version_info[0] == 3
 
@@ -34,12 +34,12 @@ else:
         return s
 
 class ApiAI(object):
-    """Main andpoint for using API
+    """Main endpoint for using api.ai
 
     Provides request.
 
     Basic Usage::
-
+        >>> ...
         >>> import apiai
         >>> ai = apiai.ApiAI(<CLIENT_ACCESS_TOKEN>, <SUBSCRIPTION_KEY>)
         >>> text_request = ai.text_request()
@@ -48,25 +48,57 @@ class ApiAI(object):
 
     __connection__class = HTTPSConnection
 
-    def __init__(self, client_access_token, subscribtion_key, version=DEFAULT_VERSION):
-        """Construct a :class:`ApiAI <ApiAI>`
+    @property
+    def client_access_token(self):
+        """client access token provided by http://api.ai/"""
+        return self._client_access_token
 
-        :param client_access_token: client access token provided by http://api.ai/
-        :param subscribtion_key: subscribtion key provided by http://api.ai/
+    @client_access_token.setter
+    def client_access_token(self, client_access_token):
+        self._client_access_token = client_access_token
+
+    @property
+    def subscibtion_key(self):
+        """subscribtion key provided by http://api.ai/"""
+        return self._subscibtion_key
+
+    @subscibtion_key.setter
+    def subscibtion_key(self, subscibtion_key):
+        self._subscibtion_key = subscibtion_key
+    
+    @property
+    def session_id(self):
+        """session_id user for unique identifier of current application user.
+        And it provide different contexts and entities for different users.
+        Default it generated like uuid for every object of `ApiAI` class."""
+        return self._session_id
+
+    @session_id.setter
+    def session_id(self, session_id):
+        self._session_id = session_id
+    
+
+    def __init__(self, client_access_token, subscribtion_key):
+        """Construct a `ApiAI`
+
+        client_access_token: client access token provided by http://api.ai/
+        subscribtion_key: subscribtion key provided by http://api.ai/
         """
 
         super(ApiAI, self).__init__()
         self.client_access_token = client_access_token
         self.subscribtion_key = subscribtion_key
 
-        self.url = 'api.api.ai'
-        self.version = version
+        self._url = 'api.api.ai'
+        self._version = DEFAULT_VERSION
 
         self.session_id = uuid.uuid4().hex
 
     def voice_request(self):
-        """Construct a :class:`VoiceRequest <VoiceRequest>`, prepare it.
-        Returns :class:`VoiceRequest <VoiceRequest>` object.
+        """Construct a VoiceRequest, prepare it. 
+        Fields of request default filled from `ApiAI` parameters 
+        (session_id, version, client_access_token, subscribtion_key).
+        Returns `VoiceRequest` object.
         """
 
         request = VoiceRequest(self.client_access_token, self.subscribtion_key, self.url, self.__connection__class, self.version, self.session_id)
@@ -74,72 +106,199 @@ class ApiAI(object):
         return request
 
     def text_request(self):
-        """Construct a :class:`VoiceRequest <TextRequest>`, prepare it.
-        Returns :class:`TextRequest <TextRequest>` object.
+        """Construct a `VoiceRequest`, prepare it.
+        Fields of request default filled from `ApiAI` parameters 
+        (session_id, version,client_access_token, subscribtion_key).
+        Returns `TextRequest` object.
         """
 
         request = TextRequest(self.client_access_token, self.subscribtion_key, self.url, self.__connection__class, self.version, self.session_id)
 
         return request
 
-class Serializable(object):
-    """Abstract serializable class"""
-    def to_dict(self):
+class _Serializable(object):
+    """Abstract serializable class.
+    All classes implemended this used for request parameters.
+    It can be serializable to JSON values for request parameters."""
+
+    """Private method used for object serialization."""
+    def _to_dict(self):
         raise NotImplementedError()
         
 
-class Entry(Serializable):
-    """User entry for entity"""
+class Entry(_Serializable):
+    """User entry for class `Entity`
+    Entry objects, which contain reference names and synonyms for `Entity`.
+    For detail information about entries see https://docs.api.ai/v6/docs/concept-entities
+    """
+
+    @property
+    def value(self):
+        """Entry's value A canonical name to be used in place of the synonyms.
+        Example: `New York`"""
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = value
+
+    @property
+    def synonyms(self):
+        """The array of synonyms.
+        Example: `["New York", "@big Apple", "city that @{never, seldom, rarely} sleeps"]`"""
+        return self._synonyms
+
+    @synonyms.setter
+    def synonyms(self, synonyms):
+        self._synonyms = synonyms
+
     def __init__(self, value, synonyms):
+        """Construct a `Entry` and fill default values."""
         super(Entry, self).__init__()
 
-        self.value = value
-        self.synonyms = synonyms
+        self._value = value
+        self._synonyms = synonyms
 
-    def to_dict(self):
+    """Private method used for object serialization."""
+    def _to_dict(self):
         return {
             'value': self.value,
             'synonyms': self.synonyms
         }
         
 
-class Entity(Serializable):
-    """User entity for request."""
+class Entity(_Serializable):
+    """
+    User entity for `Request`
+    `Entity` is used to create, retrieve and update user-defined entity objects.
+    For detail information about entities see https://docs.api.ai/v6/docs/concept-entities
+    """
+
+    @property
+    def name(self):
+        "Entity name"
+        return self._name
+    
+    @name.setter
+    def name(self, name):
+        self._name = name
+
+    @property
+    def entries(self):
+        "Entity entries. Array of `Entry` class objects"
+        return self._entries
+
+    @entries.setter
+    def entries(self, entries):
+        self._entries = entries
+    
     def __init__(self, name, entries):
         super(Entity, self).__init__()
 
         self.name = name
         self.entries = entries
 
-    def to_dict(self):
+    """Private method used for object serialization."""
+    def _to_dict(self):
         return {
             'name': self.name,
-            'entries': list(map(lambda x: x.to_dict(), self.entries))
+            'entries': list(map(lambda x: x._to_dict(), self.entries))
         }
 
 class Request(object):
-    """Abstract request class"""
-
-    __attrs__ = [
-        'lang',
-        'resetContexts',
-        'contexts',
-        'sessionId',
-        'timezone',
-        'entities',
-    ]
+    """Abstract request class
+    Contain share information for all requests."""
 
     __connection__class = None
 
-    lang = 'en'
-    resetContexts = False
-    contexts = []
-    sessionId = None
-    timezone = None
-    entities = None
+    @property
+    def lang(self):
+        """lang property used for server determination current request language. 
+        In `VoiceRequest` used for determinate language for ASR (Speech Recognitions) service.
+        Default equal 'en'. For detail information about support language see https://docs.api.ai/docs/languages"""
+        return self._lang
+
+    @lang.setter
+    def lang(self, lang):
+        self._lang = lang
+
+    @property
+    def resetContexts(self):
+        """resetContexts used for reset (cancel/disable) all previous all contexts.
+        All contexts provided in current request will be setted after reset.
+        Default equal False."""
+        return self._resetContexts
+    
+    @resetContexts.setter
+    def resetContexts(self, resetContexts):
+        self._resetContexts = resetContexts
+
+    @property
+    def contexts(self):
+        "Array of context objects. for detail information see https://docs.api.ai/v6/docs/concept-contexts"
+        return self._contexts
+    
+    @contexts.setter
+    def contexts(self, contexts):
+        self._contexts = contexts
+
+    @property
+    def session_id(self):
+        """session_id user for unique identifier of current application user.
+        And it provide different contexts and entities for different users."""
+        return self._session_id
+
+    @session_id.setter
+    def session_id(self, session_id):
+        self._session_id = session_id
+
+    @property
+    def time_zone(self):
+        """Time zone from IANA Time Zone Database (see http://www.iana.org/time-zones).
+        Examples: `America/New_York`, `Europe/Paris`
+        Time zone used for provide information about time and other parameters depended by time zone.
+        Default equal `strftime("%z", gmtime())` -> used current system time zone."""
+        return self._time_zone
+
+    @time_zone.setter
+    def time_zone(self, time_zone):
+        self._time_zone = time_zone
+    
+    @property
+    def entities(self):
+        """Array of entities that replace developer defined entities for this request only. 
+        The entity(ies) need to exist in the developer console."""
+        return self._entities
+    
+    @entities.setter
+    def entities(self, entities):
+        self._entities = entities
+
+    @property
+    def client_access_token(self):
+        """client access token provided by http://api.ai/"""
+        return self._client_access_token
+
+    @client_access_token.setter
+    def client_access_token(self, client_access_token):
+        self._client_access_token = client_access_token
+
+    @property
+    def subscibtion_key(self):
+        """subscribtion key provided by http://api.ai/"""
+        return self._subscibtion_key
+
+    @subscibtion_key.setter
+    def subscibtion_key(self, subscibtion_key):
+        self._subscibtion_key = subscibtion_key
 
     def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
         super(Request, self).__init__()
+
+        self.lang = 'en'
+        self.resetContexts = False
+        self.contexts = []
+        self.entities = None
 
         self.version = version
         self.session_id = session_id
@@ -150,13 +309,13 @@ class Request(object):
         self.subscribtion_key = subscribtion_key
         self.url = url
 
-        self.timezone = strftime("%z", gmtime())
+        self.time_zone = strftime("%z", gmtime())
 
         self._prepare_request()
 
     def _prepare_entities(self):
         if self.entities: 
-            return list(map(lambda x: x.to_dict(), self.entities))
+            return list(map(lambda x: x._to_dict(), self.entities))
         return None
 
     def _prepare_request(self, debug=False):
@@ -203,9 +362,7 @@ class Request(object):
             self.send(begin.encode('utf-8'))
 
     def send(self, chunk):
-        """Send a givet data chunk.
-        :param chunk: data chunk.
-        """
+        """Send a given data chunk of voice data."""
 
         if self._connection.sock is None:
             self._connect()
@@ -244,19 +401,24 @@ class Request(object):
 class TextRequest(Request):
     """TextRequest request class
 
-    Send simple text reques.
+    Send simple text queries.
     Query can be string or array of strings.
 
     """
 
-    __attrs__ = [
-        'query',
-    ]
+    @property
+    def query(self):
+        """Query parameter, can be string or array of strings.
+        Default equal None, nut your should fill this field before send request."""
+        return self._query
+
+    @query.setter
+    def query(self, query):
+        self._query = query
 
     def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
         super(TextRequest, self).__init__(client_access_token, subscribtion_key, url, __connection__class, version, session_id)
 
-        #: Query parameter, can be string or array of strings.
         self.query = None
 
     def _prepare_headers(self):
@@ -274,7 +436,7 @@ class TextRequest(Request):
             'lang': self.lang,
             'sessionId': self.session_id,
             'contexts': self.contexts,
-            'timezone': self.timezone,
+            'timezone': self.time_zone,
             'resetContexts': self.resetContexts,
             'entities': self._prepare_entities(),
             }
@@ -308,9 +470,7 @@ class VoiceRequest(Request):
         self.query = None
 
     def send(self, chunk):
-        """Send a givet data chunk.
-        :param chunk: data chunk.
-        """
+        """Send a given data chunk of voice data."""
 
         parts = []
 
@@ -347,7 +507,7 @@ class VoiceRequest(Request):
                 'lang': self.lang or 'en',
                 'sessionId': self.session_id,
                 'contexts': self.contexts,
-                'timezone': self.timezone,
+                'timezone': self.time_zone,
                 'resetContexts': self.resetContexts,
                 'entities': self._prepare_entities()
                 }
