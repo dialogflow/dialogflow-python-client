@@ -12,7 +12,8 @@ except ImportError:
     from distutils.core import setup
 
 if sys.argv[-1] == 'publish':
-  os.system('python setup.py sdist upload')
+  # os.system('python setup.py sdist upload')
+  os.system('python setup.py sdist bdist_wheel upload')
   sys.exit()
 
 packages = [
