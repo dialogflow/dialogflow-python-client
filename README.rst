@@ -52,10 +52,10 @@ or install it from repo:
 .. code-block:: bash
 
     $ pip install https://github.com/api-ai/api-ai-python.git
-    
-You might run into problems because some dependencies in your python environment are missing. You need to install numpy (which is available in alomost all package managers). For running the examples you also need python audio.
 
-In ubunutu the following will do the job:
+You might run into problems because some dependencies in your python environment are missing. You need to install numpy (which is available in almost all package managers). For running the examples you also need python audio.
+
+In ubuntu the following will do the job:
 
 .. code-block:: bash
 
