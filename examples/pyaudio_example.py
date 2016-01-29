@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os, sys.path
+
 try:
     import apiai
 except ImportError:
@@ -8,7 +10,6 @@ except ImportError:
     import apiai
 
 import pyaudio
-
 import time
 
 CHUNK = 512

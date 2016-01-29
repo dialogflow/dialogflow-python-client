@@ -53,13 +53,13 @@ or install it from repo:
 
     $ pip install https://github.com/api-ai/api-ai-python.git
     
-You might run into problems because some dependencies in your python environment are missing. You need to install numpy (which is available in alomost all package managers) and `scipy <http://www.scipy.org/install.html>`_. For running the examples you also need python audio.
+You might run into problems because some dependencies in your python environment are missing. You need to install numpy (which is available in alomost all package managers). For running the examples you also need python audio.
 
 In ubunutu the following will do the job:
 
 .. code-block:: bash
 
-    $ apt-get install python-pyaudio python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose python-pip
+    $ apt-get install python-pyaudio python-numpy
     $ pip install apiai
 
 Documentation

@@ -9,11 +9,6 @@ except ImportError:
     sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
     import apiai
 
-
-import apiai
-import time
-import scipy.io.wavfile as wav
-
 from codecs import open
 
 CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
