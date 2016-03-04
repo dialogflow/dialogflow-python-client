@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from request import Request
+from ..request import Request
 
 from time import gmtime
 from time import strftime

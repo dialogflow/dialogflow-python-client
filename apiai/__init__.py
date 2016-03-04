@@ -7,13 +7,32 @@ This module provides a ApiAI classes to manage requests.
 """
 
 __author__ = "Dmitriy Kuragin"
-__copyright__ = "Copyright 2015 api.ai"
+__copyright__ = "Copyright 2016 api.ai"
 __contributors__ = []
 __license__ = "Apache 2.0"
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 
-__all__ = ['apiai', 'ApiAI', 'TextRequest', 'VoiceRequest', 'VAD', 'Resampler', 'Entry', 'Entity']
+__all__ = [
+            'apiai', 
+            'ApiAI', 
+            'Request', 
+            'QueryRequest', 
+            'TextRequest', 
+            'VoiceRequest', 
+            'VAD', 
+            'Resampler', 
+            'Entry', 
+            'Entity'
+            ]
 
-from .apiai import ApiAI, TextRequest, VoiceRequest, Entry, Entity
-from .VAD import VAD
+from .requests  import Request
+from .requests  import QueryRequest
+
+from .apiai     import ApiAI
+from .apiai     import TextRequest
+from .apiai     import VoiceRequest
+from .apiai     import Entry
+from .apiai     import Entity
+
+from .VAD       import VAD
 from .resampler import Resampler
