@@ -56,6 +56,8 @@ class Request(object):
     def _prepare_request(self, debug=False):
         self._connection = self.__connection__class(self.base_url)
 
+        # self._connection.set_debuglevel(1)
+
         # if debug:
         #     self._connection.debuglevel = 1
 

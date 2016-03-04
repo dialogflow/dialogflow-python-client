@@ -16,26 +16,36 @@ __all__ = [
             'apiai', 
             'ApiAI', 
             'Request', 
-            'QueryRequest', 
-            'TextRequest', 
-            'VoiceRequest', 
-            'VAD', 
-            'Resampler', 
+            
             'Entry', 
-            'Entity'
+            'Entity',
+            'QueryRequest',
+
+            'TextRequest', 
+            
+            'VoiceRequest',  
+
+            'UserEntitiesRequest',
+            'UserEntity',
+            'UserEntityEntry',
+
+            'VAD', 
+            'Resampler',
             ]
 
-from .requests.query.query import Entry
-from .requests.query.query import Entity
+from .requests.query          import Entry
+from .requests.query          import Entity
 
-from .requests  import Request
-from .requests  import QueryRequest
+from .requests                import Request
+from .requests                import QueryRequest
 
-from .apiai     import ApiAI
-from .apiai     import TextRequest
-from .apiai     import VoiceRequest
-# from .apiai     import Entry
-# from .apiai     import Entity
+from .apiai                   import ApiAI
+from .apiai                   import TextRequest
+from .apiai                   import VoiceRequest
+from .apiai                   import UserEntitiesRequest
 
-from .VAD       import VAD
-from .resampler import Resampler
+from .requests.user_entities  import UserEntity
+from .requests.user_entities  import UserEntityEntry
+
+from .VAD                     import VAD
+from .resampler               import Resampler

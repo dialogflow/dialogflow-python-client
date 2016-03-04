@@ -15,6 +15,7 @@ import uuid
 
 from requests import VoiceRequest
 from requests import TextRequest
+from requests import UserEntitiesRequest
 
 DEFAULT_VERSION = '20150910'
 
@@ -110,3 +111,18 @@ class ApiAI(object):
             self.session_id)
 
         return request
+
+    def user_entities_request(self, user_entities = []):
+        """Construct a `UserEntitiesRequest`, prepare it.
+        Returns `UserEntitiesRequest` object.
+        """
+
+        request = UserEntitiesRequest(
+            self.client_access_token, 
+            self.subscribtion_key, 
+            self._base_url,
+            user_entities)
+
+        return request
+
+        
