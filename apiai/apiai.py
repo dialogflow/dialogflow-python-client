@@ -14,13 +14,8 @@ except ImportError:
 import sys
 import json
 import uuid
-from time import gmtime
-from time import strftime
 
-try:
-    import urllib.parse
-except ImportError:
-    import urllib
+from requests import QueryRequest
 
 DEFAULT_VERSION = '20150910'
 
@@ -89,7 +84,7 @@ class ApiAI(object):
         self.client_access_token = client_access_token
         self.subscribtion_key = subscribtion_key
 
-        self._url = 'api.api.ai'
+        self._base_url = 'api.api.ai'
         self._version = DEFAULT_VERSION
 
         self.session_id = uuid.uuid4().hex
@@ -104,8 +99,7 @@ class ApiAI(object):
         request = VoiceRequest(
             self.client_access_token, 
             self.subscribtion_key, 
-            self._url, 
-            self.__connection__class, 
+            self._base_url, 
             self._version, 
             self.session_id)
 
@@ -121,8 +115,7 @@ class ApiAI(object):
         request = TextRequest(
             self.client_access_token, 
             self.subscribtion_key, 
-            self._url, 
-            self.__connection__class, 
+            self._base_url, 
             self._version, 
             self.session_id)
 
@@ -217,200 +210,200 @@ class Entity(_Serializable):
             'entries': list(map(lambda x: x._to_dict(), self.entries))
         }
 
-class Request(object):
-    """Abstract request class
-    Contain share information for all requests."""
+# class Request(object):
+#     """Abstract request class
+#     Contain share information for all requests."""
 
-    __connection__class = None
+#     __connection__class = None
 
-    @property
-    def lang(self):
-        """lang property used for server determination current request language. 
-        In `VoiceRequest` used for determinate language for ASR (Speech Recognitions) service.
-        Default equal 'en'. For detail information about support language see https://docs.api.ai/docs/languages"""
-        return self._lang
+#     @property
+#     def lang(self):
+#         """lang property used for server determination current request language. 
+#         In `VoiceRequest` used for determinate language for ASR (Speech Recognitions) service.
+#         Default equal 'en'. For detail information about support language see https://docs.api.ai/docs/languages"""
+#         return self._lang
 
-    @lang.setter
-    def lang(self, lang):
-        self._lang = lang
+#     @lang.setter
+#     def lang(self, lang):
+#         self._lang = lang
 
-    @property
-    def resetContexts(self):
-        """resetContexts used for reset (cancel/disable) all previous all contexts.
-        All contexts provided in current request will be setted after reset.
-        Default equal False."""
-        return self._resetContexts
+#     @property
+#     def resetContexts(self):
+#         """resetContexts used for reset (cancel/disable) all previous all contexts.
+#         All contexts provided in current request will be setted after reset.
+#         Default equal False."""
+#         return self._resetContexts
     
-    @resetContexts.setter
-    def resetContexts(self, resetContexts):
-        self._resetContexts = resetContexts
+#     @resetContexts.setter
+#     def resetContexts(self, resetContexts):
+#         self._resetContexts = resetContexts
 
-    @property
-    def contexts(self):
-        "Array of context objects. for detail information see https://docs.api.ai/v6/docs/concept-contexts"
-        return self._contexts
+#     @property
+#     def contexts(self):
+#         "Array of context objects. for detail information see https://docs.api.ai/v6/docs/concept-contexts"
+#         return self._contexts
     
-    @contexts.setter
-    def contexts(self, contexts):
-        self._contexts = contexts
+#     @contexts.setter
+#     def contexts(self, contexts):
+#         self._contexts = contexts
 
-    @property
-    def session_id(self):
-        """session_id user for unique identifier of current application user.
-        And it provide different contexts and entities for different users."""
-        return self._session_id
+#     @property
+#     def session_id(self):
+#         """session_id user for unique identifier of current application user.
+#         And it provide different contexts and entities for different users."""
+#         return self._session_id
 
-    @session_id.setter
-    def session_id(self, session_id):
-        self._session_id = session_id
+#     @session_id.setter
+#     def session_id(self, session_id):
+#         self._session_id = session_id
 
-    @property
-    def time_zone(self):
-        """Time zone from IANA Time Zone Database (see http://www.iana.org/time-zones).
-        Examples: `America/New_York`, `Europe/Paris`
-        Time zone used for provide information about time and other parameters depended by time zone.
-        Default equal `strftime("%z", gmtime())` -> used current system time zone."""
-        return self._time_zone
+#     @property
+#     def time_zone(self):
+#         """Time zone from IANA Time Zone Database (see http://www.iana.org/time-zones).
+#         Examples: `America/New_York`, `Europe/Paris`
+#         Time zone used for provide information about time and other parameters depended by time zone.
+#         Default equal `strftime("%z", gmtime())` -> used current system time zone."""
+#         return self._time_zone
 
-    @time_zone.setter
-    def time_zone(self, time_zone):
-        self._time_zone = time_zone
+#     @time_zone.setter
+#     def time_zone(self, time_zone):
+#         self._time_zone = time_zone
     
-    @property
-    def entities(self):
-        """Array of entities that replace developer defined entities for this request only. 
-        The entity(ies) need to exist in the developer console."""
-        return self._entities
+#     @property
+#     def entities(self):
+#         """Array of entities that replace developer defined entities for this request only. 
+#         The entity(ies) need to exist in the developer console."""
+#         return self._entities
     
-    @entities.setter
-    def entities(self, entities):
-        self._entities = entities
+#     @entities.setter
+#     def entities(self, entities):
+#         self._entities = entities
 
-    @property
-    def client_access_token(self):
-        """client access token provided by http://api.ai/"""
-        return self._client_access_token
+#     @property
+#     def client_access_token(self):
+#         """client access token provided by http://api.ai/"""
+#         return self._client_access_token
 
-    @client_access_token.setter
-    def client_access_token(self, client_access_token):
-        self._client_access_token = client_access_token
+#     @client_access_token.setter
+#     def client_access_token(self, client_access_token):
+#         self._client_access_token = client_access_token
 
-    @property
-    def subscibtion_key(self):
-        """subscribtion key provided by http://api.ai/"""
-        return self._subscibtion_key
+#     @property
+#     def subscibtion_key(self):
+#         """subscribtion key provided by http://api.ai/"""
+#         return self._subscibtion_key
 
-    @subscibtion_key.setter
-    def subscibtion_key(self, subscibtion_key):
-        self._subscibtion_key = subscibtion_key
+#     @subscibtion_key.setter
+#     def subscibtion_key(self, subscibtion_key):
+#         self._subscibtion_key = subscibtion_key
 
-    def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
-        super(Request, self).__init__()
+#     def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
+#         super(Request, self).__init__()
 
-        self.lang = 'en'
-        self.resetContexts = False
-        self.contexts = []
-        self.entities = None
+#         self.lang = 'en'
+#         self.resetContexts = False
+#         self.contexts = []
+#         self.entities = None
 
-        self.version = version
-        self.session_id = session_id
+#         self.version = version
+#         self.session_id = session_id
 
-        self.__connection__class = __connection__class
+#         self.__connection__class = __connection__class
 
-        self.client_access_token = client_access_token
-        self.subscribtion_key = subscribtion_key
-        self.url = url
+#         self.client_access_token = client_access_token
+#         self.subscribtion_key = subscribtion_key
+#         self.url = url
 
-        self.time_zone = strftime("%z", gmtime())
+#         self.time_zone = strftime("%z", gmtime())
 
-        self._prepare_request()
+#         self._prepare_request()
 
-    def _prepare_entities(self):
-        if self.entities: 
-            return list(map(lambda x: x._to_dict(), self.entities))
-        return None
+#     def _prepare_entities(self):
+#         if self.entities: 
+#             return list(map(lambda x: x._to_dict(), self.entities))
+#         return None
 
-    def _prepare_request(self, debug=False):
-        self._connection = self.__connection__class(self.url)
+#     def _prepare_request(self, debug=False):
+#         self._connection = self.__connection__class(self.url)
 
-        if debug:
-            self._connection.debuglevel = 1
+#         if debug:
+#             self._connection.debuglevel = 1
 
-    def _connect(self):
-        self._connection.connect()
+#     def _connect(self):
+#         self._connection.connect()
 
-        path = '/v1/query'
+#         path = '/v1/query'
 
-        parameters = {
-            'v': self.version
-        }
+#         parameters = {
+#             'v': self.version
+#         }
 
-        full_path = None
+#         full_path = None
 
-        try:
-            full_path = path + '?' + urllib.urlencode(parameters)
-        except AttributeError:
-            full_path = path + '?' + urllib.parse.urlencode(parameters)
+#         try:
+#             full_path = path + '?' + urllib.urlencode(parameters)
+#         except AttributeError:
+#             full_path = path + '?' + urllib.parse.urlencode(parameters)
 
-        self._connection.putrequest('POST', full_path, skip_accept_encoding=1)
+#         self._connection.putrequest('POST', full_path, skip_accept_encoding=1)
 
-        headers = {
-            'Accept': 'application/json',
-            'Accept-Encoding': 'gzip, deflate',
-            'Authorization': ('Bearer %s' % self.client_access_token),
-            'ocp-apim-subscription-key': self.subscribtion_key,
-        }
+#         headers = {
+#             'Accept': 'application/json',
+#             'Accept-Encoding': 'gzip, deflate',
+#             'Authorization': ('Bearer %s' % self.client_access_token),
+#             'ocp-apim-subscription-key': self.subscribtion_key,
+#         }
 
-        headers.update(self._prepare_headers())
+#         headers.update(self._prepare_headers())
 
-        for header_key, header_value in headers.items():
-            self._connection.putheader(header_key, header_value)
+#         for header_key, header_value in headers.items():
+#             self._connection.putheader(header_key, header_value)
 
-        self._connection.endheaders()
+#         self._connection.endheaders()
 
-        begin = self._prepage_begin_request_data()
+#         begin = self._prepage_begin_request_data()
 
-        if not begin is None:
-            self.send(begin.encode('utf-8'))
+#         if not begin is None:
+#             self.send(begin.encode('utf-8'))
 
-    def send(self, chunk):
-        """Send a given data chunk of voice data."""
+#     def send(self, chunk):
+#         """Send a given data chunk of voice data."""
 
-        if self._connection.sock is None:
-            self._connect()
+#         if self._connection.sock is None:
+#             self._connect()
 
-        self._connection.send(chunk)
+#         self._connection.send(chunk)
 
-    def _beforegetresponce(self):
-        pass
+#     def _beforegetresponce(self):
+#         pass
 
-    def getresponse(self):
-        """Send all data and wait for response.
-        """
+#     def getresponse(self):
+#         """Send all data and wait for response.
+#         """
 
-        if self._connection.sock is None:
-            self._connect()
+#         if self._connection.sock is None:
+#             self._connect()
 
-        end = self._prepage_end_request_data()
+#         end = self._prepage_end_request_data()
 
-        if not end is None:
-            self.send(end.encode('utf-8'))
+#         if not end is None:
+#             self.send(end.encode('utf-8'))
 
-        self._beforegetresponce()
+#         self._beforegetresponce()
 
-        return self._connection.getresponse()
+#         return self._connection.getresponse()
 
-    def _prepare_headers(self):
-        raise NotImplementedError("Please Implement this method")
+#     def _prepare_headers(self):
+#         raise NotImplementedError("Please Implement this method")
 
-    def _prepage_begin_request_data(self):
-        raise NotImplementedError("Please Implement this method")
+#     def _prepage_begin_request_data(self):
+#         raise NotImplementedError("Please Implement this method")
 
-    def _prepage_end_request_data(self):
-        raise NotImplementedError("Please Implement this method")
+#     def _prepage_end_request_data(self):
+#         raise NotImplementedError("Please Implement this method")
 
 
-class TextRequest(Request):
+class TextRequest(QueryRequest):
     """TextRequest request class
 
     Send simple text queries.
@@ -428,8 +421,8 @@ class TextRequest(Request):
     def query(self, query):
         self._query = query
 
-    def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
-        super(TextRequest, self).__init__(client_access_token, subscribtion_key, url, __connection__class, version, session_id)
+    def __init__(self, client_access_token, subscribtion_key, base_url, version, session_id):
+        super(TextRequest, self).__init__(client_access_token, subscribtion_key, base_url, version, session_id)
 
         self.query = None
 
@@ -456,7 +449,7 @@ class TextRequest(Request):
         return json.dumps(data)
 
 
-class VoiceRequest(Request):
+class VoiceRequest(QueryRequest):
     """VoiceRequest request class
 
     Send voice data by chunks.
@@ -477,9 +470,8 @@ class VoiceRequest(Request):
         <JSON response>
     """
 
-    def __init__(self, client_access_token, subscribtion_key, url, __connection__class, version, session_id):
-        super(VoiceRequest, self).__init__(client_access_token, subscribtion_key, url, __connection__class, version, session_id)
-        self.query = None
+    # def __init__(self, client_access_token, subscribtion_key, base_url, version, session_id):
+    #     super(VoiceRequest, self).__init__(client_access_token, subscribtion_key, base_url, version, session_id)
 
     def send(self, chunk):
         """Send a given data chunk of voice data."""
@@ -538,4 +530,4 @@ class VoiceRequest(Request):
 
     def _beforegetresponce(self):
         self._connection.send(b('0\r\n\r\n'))
-        
+

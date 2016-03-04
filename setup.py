@@ -22,7 +22,6 @@ packages = [
 
 requires = [
     'numpy'
-    # 'scipy',
 ]
 
 with open('README.rst', 'r') as f:

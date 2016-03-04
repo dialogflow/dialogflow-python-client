@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 apiai
 ~~~~~~~~~~~~~~~~
@@ -10,8 +12,8 @@ __contributors__ = []
 __license__ = "Apache 2.0"
 __version__ = "0.0.8"
 
-__all__ = ['apiai', 'ApiAI', 'Request', 'TextRequest', 'VoiceRequest', 'VAD', 'Resampler', 'Entry', 'Entity']
+__all__ = ['apiai', 'ApiAI', 'TextRequest', 'VoiceRequest', 'VAD', 'Resampler', 'Entry', 'Entity']
 
-from .apiai import ApiAI, Request, TextRequest, VoiceRequest, Entry, Entity
+from .apiai import ApiAI, TextRequest, VoiceRequest, Entry, Entity
 from .VAD import VAD
 from .resampler import Resampler
