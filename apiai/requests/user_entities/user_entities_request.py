@@ -8,10 +8,13 @@ from ..query import Entry
 import json
 
 class UserEntity(Entity):
-    """docstring for UserEntity"""
+    """UserEntity object used for upload user entities. 
+    Detail information about user entities you can see at our site 
+    https://docs.api.ai/docs/userentities"""
 
     @property
     def session_id(self):
+        """session_id parameter used for determinate of every unique users."""
         return self._session_id
 
     @session_id.setter
@@ -24,6 +27,9 @@ class UserEntity(Entity):
 
     @extend.setter
     def extend(self, extend):
+        """extend parameter used definition user entities logic. If True then
+        uploaded user entities will be mixed with user entities specified in 
+        server side else currently uploaded entities witll uverride server entities."""
         self._extend = extend
 
     def __init__(self, name, entries, session_id = None, extend = False):
@@ -44,15 +50,19 @@ class UserEntity(Entity):
 
 
 class UserEntityEntry(Entry):
-    """docstring for Entry"""
+    """UserEntityEntry object used for upload user entities. 
+    Detail information about user entities you can see at our site 
+    https://docs.api.ai/docs/userentities"""
+
     pass
 
 
 class UserEntitiesRequest(Request):
-    """docstring for UserEntitiesRequest"""
+    """UserEntitiesRequest is request for upload user entities. Detail see http://docs.api.ai/"""
 
     @property
     def user_entities(self):
+        "user_entities parameter for specification of same user entities."
         return self._user_entities
 
     @user_entities.setter
