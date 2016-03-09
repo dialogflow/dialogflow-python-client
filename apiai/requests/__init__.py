@@ -13,4 +13,4 @@ from .query         import QueryRequest
 from .query         import TextRequest
 from .query         import VoiceRequest
 
-from user_entities  import UserEntitiesRequest
+from .user_entities  import UserEntitiesRequest

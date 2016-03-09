@@ -13,9 +13,9 @@ except ImportError:
 
 import uuid
 
-from requests import VoiceRequest
-from requests import TextRequest
-from requests import UserEntitiesRequest
+from .requests import VoiceRequest
+from .requests import TextRequest
+from .requests import UserEntitiesRequest
 
 DEFAULT_VERSION = '20150910'
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from query import QueryRequest
+from . import QueryRequest
 
 import json
 
