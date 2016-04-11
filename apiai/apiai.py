@@ -78,11 +78,12 @@ class ApiAI(object):
         self._session_id = session_id
     
 
-    def __init__(self, client_access_token, subscribtion_key):
+    def __init__(self, client_access_token, subscribtion_key, session_id=None):
         """Construct a `ApiAI`
 
         client_access_token: client access token provided by http://api.ai/
         subscribtion_key: subscribtion key provided by http://api.ai/
+        session_id: string token up to 36 symbols long, used to identify the client and to manage sessions parameters
         """
 
         super(ApiAI, self).__init__()
@@ -92,7 +93,10 @@ class ApiAI(object):
         self._url = 'api.api.ai'
         self._version = DEFAULT_VERSION
 
-        self.session_id = uuid.uuid4().hex
+        if session_id is None:
+            self.session_id = uuid.uuid4().hex
+        else:
+            self.session_id=session_id
 
     def voice_request(self):
         """Construct a VoiceRequest, prepare it. 
