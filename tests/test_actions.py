@@ -12,11 +12,10 @@ except ImportError:
     import apiai
 
 CLIENT_ACCESS_TOKEN = '09604c7f91ce4cd8a4ede55eb5340b9d'
-SUBSCRIPTION_KEY = '4c91a8e5-275f-4bf0-8f94-befa78ef92cd'
 
 class TestActions(unittest.TestCase):
     def setUp(self):
-        self.ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN, SUBSCRIPTION_KEY)
+        self.ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
     def load_text_request_with_quiery(self, query=None, resetContexts=False, entities=None):
         if not query:
