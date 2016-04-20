@@ -17,7 +17,10 @@ if sys.argv[-1] == 'publish':
   sys.exit()
 
 packages = [
-    'apiai',        
+    'apiai',
+    'apiai.requests',
+    'apiai.requests.query',
+    'apiai.requests.user_entities'  
 ]
 
 requires = [
