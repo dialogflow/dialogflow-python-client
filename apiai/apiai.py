@@ -42,15 +42,6 @@ class ApiAI(object):
     @client_access_token.setter
     def client_access_token(self, client_access_token):
         self._client_access_token = client_access_token
-
-    @property
-    def subscibtion_key(self):
-        """subscribtion key provided by http://api.ai/"""
-        return self._subscibtion_key
-
-    @subscibtion_key.setter
-    def subscibtion_key(self, subscibtion_key):
-        self._subscibtion_key = subscibtion_key
     
     @property
     def session_id(self):
@@ -64,16 +55,14 @@ class ApiAI(object):
         self._session_id = session_id
     
 
-    def __init__(self, client_access_token, subscribtion_key):
+    def __init__(self, client_access_token):
         """Construct a `ApiAI`
 
         client_access_token: client access token provided by http://api.ai/
-        subscribtion_key: subscribtion key provided by http://api.ai/
         """
 
         super(ApiAI, self).__init__()
         self.client_access_token = client_access_token
-        self.subscribtion_key = subscribtion_key
 
         self._base_url = 'api.api.ai'
         self._version = DEFAULT_VERSION
@@ -83,13 +72,12 @@ class ApiAI(object):
     def voice_request(self):
         """Construct a VoiceRequest, prepare it. 
         Fields of request default filled from `ApiAI` parameters 
-        (session_id, version, client_access_token, subscribtion_key).
+        (session_id, version, client_access_token).
         Returns `VoiceRequest` object.
         """
 
         request = VoiceRequest(
             self.client_access_token, 
-            self.subscribtion_key, 
             self._base_url, 
             self._version, 
             self.session_id)
@@ -99,13 +87,12 @@ class ApiAI(object):
     def text_request(self):
         """Construct a `VoiceRequest`, prepare it.
         Fields of request default filled from `ApiAI` parameters 
-        (session_id, version,client_access_token, subscribtion_key).
+        (session_id, version,client_access_token).
         Returns `TextRequest` object.
         """
 
         request = TextRequest(
             self.client_access_token, 
-            self.subscribtion_key, 
             self._base_url, 
             self._version, 
             self.session_id)
@@ -119,7 +106,6 @@ class ApiAI(object):
 
         request = UserEntitiesRequest(
             self.client_access_token, 
-            self.subscribtion_key, 
             self._base_url,
             user_entities)
 

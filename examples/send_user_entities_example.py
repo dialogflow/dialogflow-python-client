@@ -13,10 +13,9 @@ except ImportError:
 import uuid
 
 CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
-SUBSCRIPTION_KEY = 'YOUR_SUBSCRIPTION_KEY' 
 
 def main():
-    ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN, SUBSCRIPTION_KEY)
+    ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
     session_id = uuid.uuid4().hex # some unuque session id for user identification
 

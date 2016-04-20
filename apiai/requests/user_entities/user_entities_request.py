@@ -69,8 +69,8 @@ class UserEntitiesRequest(Request):
     def user_entities(self, user_entities):
         self._user_entities = user_entities
 
-    def __init__(self, client_access_token, subscribtion_key, base_url, user_entities = []):
-        super(UserEntitiesRequest, self).__init__(client_access_token, subscribtion_key, base_url, '/v1/userEntities', {})
+    def __init__(self, client_access_token, base_url, user_entities = []):
+        super(UserEntitiesRequest, self).__init__(client_access_token, base_url, '/v1/userEntities', {})
 
         self._user_entities = user_entities
 

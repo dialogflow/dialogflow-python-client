@@ -23,12 +23,11 @@ Running examples
 --------
 
 1. Find examples from 'examples' path.
-2. Insert API key & subscription.
+2. Insert API key.
 
 .. code-block:: python
 
     >>> CLIENT_ACCESS_TOKEN = '<YOUR_CLIENT_ACCESS_TOKEN>'
-    >>> SUBSCRIPTION_KEY = '<YOUR_SUBSCRIPTION_KEY>' 
     ...
 
 Features

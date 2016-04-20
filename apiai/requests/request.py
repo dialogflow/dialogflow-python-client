@@ -27,16 +27,7 @@ class Request(object):
     def client_access_token(self, client_access_token):
         self._client_access_token = client_access_token
 
-    @property
-    def subscibtion_key(self):
-        """subscribtion key provided by http://api.ai/"""
-        return self._subscibtion_key
-
-    @subscibtion_key.setter
-    def subscibtion_key(self, subscibtion_key):
-        self._subscibtion_key = subscibtion_key
-
-    def __init__(self, client_access_token, subscribtion_key, base_url, path, query_parameters = []):
+    def __init__(self, client_access_token, base_url, path, query_parameters = []):
         super(Request, self).__init__()
 
         self.base_url = base_url
@@ -44,7 +35,6 @@ class Request(object):
         self.query_parameters = query_parameters
 
         self.client_access_token = client_access_token
-        self.subscribtion_key = subscribtion_key
         
         self._prepare_request()
 
@@ -75,8 +65,7 @@ class Request(object):
 
         headers = {
             'Accept': 'application/json',
-            'Authorization': ('Bearer %s' % self.client_access_token),
-            'ocp-apim-subscription-key': self.subscribtion_key,
+            'Authorization': ('Bearer %s' % self.client_access_token)
         }
 
         headers.update(self._prepare_headers())

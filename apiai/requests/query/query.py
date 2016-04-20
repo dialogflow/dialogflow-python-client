@@ -162,8 +162,8 @@ class QueryRequest(Request):
     def entities(self, entities):
         self._entities = entities
 
-    def __init__(self, client_access_token, subscribtion_key, base_url, version, session_id):
-        super(QueryRequest, self).__init__(client_access_token, subscribtion_key, base_url, '/v1/query', {'v': version})
+    def __init__(self, client_access_token, base_url, version, session_id):
+        super(QueryRequest, self).__init__(client_access_token, base_url, '/v1/query', {'v': version})
 
         self.lang = 'en'
         self.resetContexts = False

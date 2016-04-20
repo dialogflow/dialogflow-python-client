@@ -10,10 +10,9 @@ except ImportError:
     import apiai
 
 CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
-SUBSCRIPTION_KEY = 'YOUR_SUBSCRIPTION_KEY' 
 
 def main():
-    ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN, SUBSCRIPTION_KEY)
+    ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
     request = ai.text_request()
 

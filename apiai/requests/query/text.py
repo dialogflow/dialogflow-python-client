@@ -22,8 +22,8 @@ class TextRequest(QueryRequest):
     def query(self, query):
         self._query = query
 
-    def __init__(self, client_access_token, subscribtion_key, base_url, version, session_id):
-        super(TextRequest, self).__init__(client_access_token, subscribtion_key, base_url, version, session_id)
+    def __init__(self, client_access_token, base_url, version, session_id):
+        super(TextRequest, self).__init__(client_access_token, base_url, version, session_id)
 
         self.query = None
 
