@@ -54,7 +54,6 @@ class ApiAI(object):
     def session_id(self, session_id):
         self._session_id = session_id
     
-
     def __init__(self, client_access_token):
         """Construct a `ApiAI`
 
@@ -67,7 +66,10 @@ class ApiAI(object):
         self._base_url = 'api.api.ai'
         self._version = DEFAULT_VERSION
 
-        self.session_id = uuid.uuid4().hex
+        if session_id is None:
+            self.session_id = uuid.uuid4().hex
+        else:
+            self.session_id=session_id
 
     def voice_request(self):
         """Construct a VoiceRequest, prepare it. 
@@ -110,5 +112,3 @@ class ApiAI(object):
             user_entities)
 
         return request
-
-        
