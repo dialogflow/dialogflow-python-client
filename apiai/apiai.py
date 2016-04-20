@@ -54,7 +54,7 @@ class ApiAI(object):
     def session_id(self, session_id):
         self._session_id = session_id
     
-    def __init__(self, client_access_token):
+    def __init__(self, client_access_token, session_id=None):
         """Construct a `ApiAI`
 
         client_access_token: client access token provided by http://api.ai/
