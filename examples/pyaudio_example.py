@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, sys.path
+import os
+import sys
 
 try:
     import apiai
@@ -9,6 +10,8 @@ except ImportError:
     sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
     import apiai
 
+
+import thread
 import pyaudio
 import time
 
@@ -19,6 +22,10 @@ RATE = 44100
 RECORD_SECONDS = 2
 
 CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
+
+def input_thread(L):
+    raw_input()
+    L.append(None)
 
 def main():
     resampler = apiai.Resampler(source_samplerate=RATE)
@@ -53,11 +60,15 @@ def main():
 
     stream.start_stream()
 
-    print ("Say!")
+    print ("Say! Press enter for stop audio recording.")
 
     try:
-        while stream.is_active():
+        L = []
+        thread.start_new_thread(input_thread, (L,))
+
+        while stream.is_active() and len(L) == 0:
             time.sleep(0.1)
+            
     except Exception:
         raise e
     except KeyboardInterrupt:
