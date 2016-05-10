@@ -28,7 +28,7 @@ class ApiAI(object):
     Basic Usage::
         >>> ...
         >>> import apiai
-        >>> ai = apiai.ApiAI(<CLIENT_ACCESS_TOKEN>, <SUBSCRIPTION_KEY>)
+        >>> ai = apiai.ApiAI(<CLIENT_ACCESS_TOKEN>)
         >>> text_request = ai.text_request()
         >>> ...
     """
@@ -37,7 +37,7 @@ class ApiAI(object):
 
     @property
     def client_access_token(self):
-        """client access token provided by http://api.ai/"""
+        """client access token provided by https://api.ai/"""
         return self._client_access_token
 
     @client_access_token.setter
@@ -58,7 +58,7 @@ class ApiAI(object):
     def __init__(self, client_access_token, session_id=None):
         """Construct a `ApiAI`
 
-        client_access_token: client access token provided by http://api.ai/
+        client_access_token: client access token provided by https://api.ai/
         """
 
         super(ApiAI, self).__init__()

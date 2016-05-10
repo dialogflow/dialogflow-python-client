@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import urllib
+import os
 
 try:  # Python 3
     from http.client import HTTPSConnection
@@ -42,6 +43,7 @@ class Request(object):
 
         self.client_access_token = client_access_token
 
+        self._prepare_proxy()
         self._prepare_request()
 
     def _prepare_entities(self):
@@ -49,8 +51,28 @@ class Request(object):
             return list(map(lambda x: x._to_dict(), self.entities))
         return None
 
+    def _prepare_proxy(self):
+
+        self.proxy_enabled = False
+        if "https_proxy" in os.environ:
+            self.proxy_enabled = True
+            https_proxy = os.environ["https_proxy"]
+
+            # As proxies are set like "export https_proxy=$http_proxy"
+            # so it might start with 'https' or 'http'
+
+            https_proxy = https_proxy.replace("https://", "").rstrip("/")
+            https_proxy = https_proxy.replace("http://", "").rstrip("/")
+            (self.proxy_host, self.proxy_port) = https_proxy.split(":")
+            self.proxy_port = int(self.proxy_port)
+
     def _prepare_request(self, debug=False):
-        self._connection = self.__connection__class(self.base_url)
+        if(self.proxy_enabled):
+            self._connection = self.__connection__class(self.proxy_host,
+                                                        self.proxy_port)
+            self._connection.set_tunnel(self.base_url)
+        else:
+            self._connection = self.__connection__class(self.base_url)
 
     def _connect(self):
         self._connection.connect()
