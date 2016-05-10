@@ -4,6 +4,7 @@ from . import QueryRequest
 
 import json
 
+
 class TextRequest(QueryRequest):
     """TextRequest request class
 
@@ -15,7 +16,8 @@ class TextRequest(QueryRequest):
     @property
     def query(self):
         """Query parameter, can be string or array of strings.
-        Default equal None, nut your should fill this field before send request."""
+        Default equal None, nut your should fill this field before send
+        request."""
         return self._query
 
     @query.setter
@@ -23,7 +25,10 @@ class TextRequest(QueryRequest):
         self._query = query
 
     def __init__(self, client_access_token, base_url, version, session_id):
-        super(TextRequest, self).__init__(client_access_token, base_url, version, session_id)
+        super(TextRequest, self).__init__(client_access_token,
+                                          base_url,
+                                          version,
+                                          session_id)
 
         self.query = None
 
@@ -31,7 +36,7 @@ class TextRequest(QueryRequest):
         return {
             'Content-Type': 'application/json; charset=utf-8',
             'Content-Length': len(self._prepage_end_request_data())
-            } 
+        }
 
     def _prepage_begin_request_data(self):
         return None
@@ -45,6 +50,6 @@ class TextRequest(QueryRequest):
             'timezone': self.time_zone,
             'resetContexts': self.resetContexts,
             'entities': self._prepare_entities(),
-            }
+        }
 
         return json.dumps(data)

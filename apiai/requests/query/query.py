@@ -5,6 +5,7 @@ from ..request import Request
 from time import gmtime
 from time import strftime
 
+
 class _Serializable(object):
     """Abstract serializable class.
     All classes implemended this used for request parameters.
@@ -13,12 +14,13 @@ class _Serializable(object):
     """Private method used for object serialization."""
     def _to_dict(self):
         raise NotImplementedError()
-        
+
 
 class Entry(_Serializable):
     """User entry for class `Entity`
     Entry objects, which contain reference names and synonyms for `Entity`.
-    For detail information about entries see https://docs.api.ai/v6/docs/concept-entities
+    For detail information about entries see
+    https://docs.api.ai/v6/docs/concept-entities
     """
 
     @property
@@ -34,7 +36,8 @@ class Entry(_Serializable):
     @property
     def synonyms(self):
         """The array of synonyms.
-        Example: `["New York", "@big Apple", "city that @{never, seldom, rarely} sleeps"]`"""
+        Example: `["New York", "@big Apple",
+        "city that @{never, seldom, rarely} sleeps"]`"""
         return self._synonyms
 
     @synonyms.setter
@@ -54,20 +57,21 @@ class Entry(_Serializable):
             'value': self.value,
             'synonyms': self.synonyms
         }
-        
+
 
 class Entity(_Serializable):
     """
     User entity for `Request`
-    `Entity` is used to create, retrieve and update user-defined entity objects.
-    For detail information about entities see https://docs.api.ai/v6/docs/concept-entities
+    `Entity` is used to create, retrieve and update user-defined entity
+    objects. For detail information about entities see
+    https://docs.api.ai/v6/docs/concept-entities
     """
 
     @property
     def name(self):
         "Entity name"
         return self._name
-    
+
     @name.setter
     def name(self, name):
         self._name = name
@@ -80,7 +84,7 @@ class Entity(_Serializable):
     @entries.setter
     def entries(self, entries):
         self._entries = entries
-    
+
     def __init__(self, name, entries):
         super(Entity, self).__init__()
 
@@ -101,9 +105,11 @@ class QueryRequest(Request):
 
     @property
     def lang(self):
-        """lang property used for server determination current request language. 
-        In `VoiceRequest` used for determinate language for ASR (Speech Recognitions) service.
-        Default equal 'en'. For detail information about support language see https://docs.api.ai/docs/languages"""
+        """lang property used for server determination current request language.
+        In `VoiceRequest` used for determinate language for ASR
+        (Speech Recognitions) service. Default equal 'en'. For detail
+        information about support language see
+        https://docs.api.ai/docs/languages"""
         return self._lang
 
     @lang.setter
@@ -116,16 +122,17 @@ class QueryRequest(Request):
         All contexts provided in current request will be setted after reset.
         Default equal False."""
         return self._resetContexts
-    
+
     @resetContexts.setter
     def resetContexts(self, resetContexts):
         self._resetContexts = resetContexts
 
     @property
     def contexts(self):
-        "Array of context objects. for detail information see https://docs.api.ai/v6/docs/concept-contexts"
+        """Array of context objects. for detail information see
+        https://docs.api.ai/v6/docs/concept-contexts"""
         return self._contexts
-    
+
     @contexts.setter
     def contexts(self, contexts):
         self._contexts = contexts
@@ -142,28 +149,35 @@ class QueryRequest(Request):
 
     @property
     def time_zone(self):
-        """Time zone from IANA Time Zone Database (see http://www.iana.org/time-zones).
-        Examples: `America/New_York`, `Europe/Paris`
-        Time zone used for provide information about time and other parameters depended by time zone.
-        Default equal `strftime("%z", gmtime())` -> used current system time zone."""
+        """Time zone from IANA Time Zone Database
+        (see http://www.iana.org/time-zones). Examples: `America/New_York`,
+        `Europe/Paris`. Time zone used for provide information about time and
+        other parameters depended by time zone.
+        Default equal `strftime("%z", gmtime())` -> used current system time
+        zone."""
         return self._time_zone
 
     @time_zone.setter
     def time_zone(self, time_zone):
         self._time_zone = time_zone
-    
+
     @property
     def entities(self):
-        """Array of entities that replace developer defined entities for this request only. 
+        """Array of entities that replace developer defined entities for this
+        request only.
         The entity(ies) need to exist in the developer console."""
         return self._entities
-    
+
     @entities.setter
     def entities(self, entities):
         self._entities = entities
 
     def __init__(self, client_access_token, base_url, version, session_id):
-        super(QueryRequest, self).__init__(client_access_token, base_url, '/v1/query', {'v': version})
+        super(QueryRequest, self).__init__(client_access_token,
+                                           base_url,
+                                           '/v1/query',
+                                           {'v': version}
+                                           )
 
         self.lang = 'en'
         self.resetContexts = False
@@ -176,7 +190,7 @@ class QueryRequest(Request):
         self.time_zone = strftime("%z", gmtime())
 
     def _prepare_entities(self):
-        if self.entities: 
+        if self.entities:
             return list(map(lambda x: x._to_dict(), self.entities))
         return None
 

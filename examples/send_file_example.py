@@ -1,24 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os.path, sys
+import os.path
+import sys
 
 try:
     import apiai
 except ImportError:
-    sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+    sys.path.append(
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
+    )
     import apiai
 
 from codecs import open
 
 CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
 
+
 def main():
     ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
     request = ai.voice_request()
 
-    request.lang = 'en' # optional, default value equal 'en'
+    request.lang = 'en'  # optional, default value equal 'en'
 
     bytessize = 2048
 

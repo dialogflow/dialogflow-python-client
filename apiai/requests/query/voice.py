@@ -15,6 +15,7 @@ else:
     def b(s):
         return s
 
+
 class VoiceRequest(QueryRequest):
     """VoiceRequest request class
 
@@ -47,7 +48,7 @@ class VoiceRequest(QueryRequest):
             parts.append(chunk.decode('latin-1'))
         else:
             parts.append(chunk)
-            
+
         parts.append('')
 
         newChunk = '\r\n'.join(parts)
@@ -55,30 +56,30 @@ class VoiceRequest(QueryRequest):
         super(VoiceRequest, self).send(b(newChunk))
 
     def _prepare_headers(self):
-        self.boundary = ('--------{0}'.format(uuid.uuid4().hex)).encode('utf-8')
+        uuid_hex = uuid.uuid4().hex
+        self.boundary = ('--------{0}'.format(uuid_hex)).encode('utf-8')
 
         return {
             'Content-Type': 'multipart/form-data; boundary=%s' % self.boundary,
             'Transfer-Encoding': 'chunked',
             'Connection': 'keep-alive',
-            } 
+        }
 
     def _prepage_begin_request_data(self):
         data = '--%s\r\n' % self.boundary
         data += 'Content-Disposition: form-data; name="request"\r\n'
         data += "Content-Type: application/json\r\n\r\n"
 
-
         data += json.dumps(
-                {
+            {
                 'lang': self.lang or 'en',
                 'sessionId': self.session_id,
                 'contexts': self.contexts,
                 'timezone': self.time_zone,
                 'resetContexts': self.resetContexts,
                 'entities': self._prepare_entities()
-                }
-            )
+            }
+        )
 
         data += '\r\n'
 
@@ -93,5 +94,3 @@ class VoiceRequest(QueryRequest):
 
     def _beforegetresponce(self):
         self._connection.send(b('0\r\n\r\n'))
-        
-

@@ -7,7 +7,9 @@ import sys
 try:
     import apiai
 except ImportError:
-    sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+    sys.path.append(
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
+    )
     import apiai
 
 
@@ -23,9 +25,11 @@ RECORD_SECONDS = 2
 
 CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
 
+
 def input_thread(L):
     raw_input()
     L.append(None)
+
 
 def main():
     resampler = apiai.Resampler(source_samplerate=RATE)
@@ -36,7 +40,7 @@ def main():
 
     request = ai.voice_request()
 
-    request.lang = 'en' # optional, default value equal 'en'
+    request.lang = 'en'  # optional, default value equal 'en'
 
     def callback(in_data, frame_count, time_info, status):
         frames, data = resampler.resample(in_data, frame_count)
@@ -51,8 +55,8 @@ def main():
     p = pyaudio.PyAudio()
 
     stream = p.open(format=FORMAT,
-                    channels=CHANNELS, 
-                    rate=RATE, 
+                    channels=CHANNELS,
+                    rate=RATE,
                     input=True,
                     output=False,
                     frames_per_buffer=CHUNK,
@@ -68,9 +72,9 @@ def main():
 
         while stream.is_active() and len(L) == 0:
             time.sleep(0.1)
-            
+
     except Exception:
-        raise e
+        raise
     except KeyboardInterrupt:
         pass
 
