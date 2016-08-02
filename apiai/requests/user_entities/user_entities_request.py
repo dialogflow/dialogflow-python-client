@@ -90,4 +90,4 @@ class UserEntitiesRequest(Request):
         return None
 
     def _prepage_end_request_data(self):
-        return json.dumps(map(lambda x: x._to_dict(), self._user_entities))
+        return json.dumps(list(map(lambda x: x._to_dict(), self._user_entities)))
