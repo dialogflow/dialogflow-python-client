@@ -11,5 +11,8 @@ before_install:
   - sudo apt-get install -qq libgmp-dev libmpfr-dev
   - sudo apt-get install -qq python-numpy python-scipy
 notifications:
-  email: false
+  email:
+    recipients:
+      - dkuragin@ya.ru
+      - kuragin@speaktoit.com
 script: make test
