@@ -22,7 +22,7 @@ def main():
 
     request.lang = 'en'  # optional, default value equal 'en'
 
-    # request.session_id = "<SESSION ID, UBIQUE FOR EACH USER>"
+    # request.session_id = "<SESSION ID, UNIQUE FOR EACH USER>"
 
     request.query = "Hello"
 
