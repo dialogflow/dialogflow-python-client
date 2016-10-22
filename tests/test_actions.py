@@ -57,7 +57,7 @@ class TestActions(unittest.TestCase):
         context = result['contexts'][0]
 
         self.assertEqual(context['name'], 'name_question')
-        self.assertTrue(len(context['parameters']) == 2)
+        self.assertTrue(len(context['parameters']) == 4)
 
         parameters = context['parameters']
         param = parameters.get('param', None)
@@ -79,7 +79,7 @@ class TestActions(unittest.TestCase):
 
         entities = [
             apiai.Entity(
-                'dwarfs', 
+                'dwarfs',
                 [
                     apiai.Entry('Ori', ['ori', 'Nori']),
                     apiai.Entry('bifur', ['Bofur', 'Bombur']),

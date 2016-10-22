@@ -35,7 +35,8 @@ class TextRequest(QueryRequest):
     def _prepare_headers(self):
         return {
             'Content-Type': 'application/json; charset=utf-8',
-            'Content-Length': len(self._prepage_end_request_data())
+            'Content-Length': len(self._prepage_end_request_data()),
+            'devMode': 'true'
         }
 
     def _prepage_begin_request_data(self):

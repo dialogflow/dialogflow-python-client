@@ -12,7 +12,8 @@ except ImportError:
     )
     import apiai
 
-CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
+# CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
+CLIENT_ACCESS_TOKEN = '138c6f0337a34cfa8022c9aa29ade48a'
 
 
 def main():
@@ -20,11 +21,12 @@ def main():
 
     request = ai.text_request()
 
-    request.lang = 'en'  # optional, default value equal 'en'
+    request.lang = 'de'  # optional, default value equal 'en'
 
     # request.session_id = "<SESSION ID, UBIQUE FOR EACH USER>"
 
-    request.query = "Hello"
+    # request.query = "Hello"
+    request.query = "Wann kann ich morgen surfen?"
 
     response = request.getresponse()
 

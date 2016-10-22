@@ -37,6 +37,32 @@ class VoiceRequest(QueryRequest):
         <JSON response>
     """
 
+    def __init__(self, client_access_token, base_url, version, session_id):
+        super(VoiceRequest, self).__init__(
+            client_access_token,
+            base_url,
+            version,
+            session_id
+        )
+
+        self._audio_mime_type = None
+
+    @property
+    def audio_mime_type(self):
+        """
+            audio mime type, default value equal None. If value is None then
+            uses 'audio/wav' mime type.
+        """
+        return self._audio_mime_type
+
+    @audio_mime_type.setter
+    def audio_mime_type(self, value):
+        """
+            audio mime type setter
+            :type value: str or unicode
+        """
+        self._audio_mime_type = value
+
     def send(self, chunk):
         """Send a given data chunk of voice data."""
 
@@ -85,9 +111,16 @@ class VoiceRequest(QueryRequest):
 
         data += '--%s\r\n' % self.boundary
         data += 'Content-Disposition: form-data; name="voiceData"\r\n'
-        data += "Content-Type: audio/wav\r\n\r\n"
+        data += "Content-Type: %s\r\n\r\n" % (self._audio_mime_type_prepare())
 
         return data
+
+    def _audio_mime_type_prepare(self):
+        current_audio_mime_type = self.audio_mime_type
+        if current_audio_mime_type is None:
+            current_audio_mime_type = u"audio/wav"
+
+        return current_audio_mime_type
 
     def _prepage_end_request_data(self):
         return "\r\n--%s--\r\n" % self.boundary
