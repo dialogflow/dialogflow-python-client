@@ -81,15 +81,15 @@ class ApiAI(object):
 
     def __init__(self, client_access_token, session_id=None):
         super(ApiAI, self).__init__()
-        self.client_access_token = client_access_token
+        self._client_access_token = client_access_token
 
         self._base_url = 'api.api.ai'
         self._version = DEFAULT_VERSION
 
         if session_id is None:
-            self.session_id = uuid.uuid4().hex
+            self._session_id = uuid.uuid4().hex
         else:
-            self.session_id = session_id
+            self._session_id = session_id
 
     def voice_request(self):
         """
@@ -129,13 +129,16 @@ class ApiAI(object):
 
         return request
 
-    def user_entities_request(self, user_entities=[]):
+    def user_entities_request(self, user_entities=None):
         """
             Construct a `UserEntitiesRequest`, prepare it.
             Returns `UserEntitiesRequest` object.
 
             :rtype UserEntitiesRequest:
         """
+
+        if user_entities is None:
+            user_entities = []
 
         request = UserEntitiesRequest(
             self.client_access_token,

@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+    Setup script for using and create package for pip.
+"""
+
 import sys
 import os
 
@@ -16,34 +20,38 @@ if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist bdist_wheel upload')
     sys.exit()
 
-packages = [
+PACKAGES = [
     'apiai',
     'apiai.requests',
     'apiai.requests.query',
     'apiai.requests.user_entities'
 ]
 
-requires = [
+REQUIRES = [
     'numpy'
 ]
 
 with open('README.rst', 'r') as f:
-    readme = f.read()
+    README = f.read()
 
 with open('HISTORY.rst', 'r') as f:
-    history = f.read()
+    HISTORY = f.read()
 
 setup(
     name='apiai',
     version=apiai.__version__,
-    description='The API.AI iOS SDK makes it easy to integrate speech recognition with API.AI natural language processing API on iOS devices.',
-    long_description=readme + '\n\n' + history,
+    description=(
+        'The API.AI iOS SDK makes it easy to integrate speech '
+        'recognition with API.AI natural language processing '
+        'API on iOS devices.'
+    ),
+    long_description=README + '\n\n' + HISTORY,
     author='Dmitriy Kuragin',
     author_email='kuragin@speaktoit.com',
     license='Apache 2.0',
     url='https://api.ai/',
-    packages=packages,
-    install_requires=requires,
+    packages=PACKAGES,
+    install_requires=REQUIRES,
     package_data={'': ['LICENSE']},
     classifiers=(
         'Development Status :: 5 - Production/Stable',

@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+"""
+apiai
+~~~~~~~~~~~~~~~~
+This module provides a ApiAI classes to manage requests.
+"""
+
 from .requests.query import Entry
 from .requests.query import Entity
 
@@ -16,12 +22,6 @@ from .requests.user_entities import UserEntityEntry
 
 from .VAD import VAD
 from .resampler import Resampler
-
-"""
-apiai
-~~~~~~~~~~~~~~~~
-This module provides a ApiAI classes to manage requests.
-"""
 
 __author__ = "Dmitriy Kuragin"
 __copyright__ = "Copyright 2016 api.ai"
