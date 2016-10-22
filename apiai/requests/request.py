@@ -18,7 +18,7 @@ class Request(object):
     """Abstract request class
     Contain share information for all requests."""
 
-    __connection__class = HTTPSConnection
+    _connection_class = HTTPSConnection
 
     @property
     def client_access_token(self):
@@ -68,11 +68,14 @@ class Request(object):
 
     def _prepare_request(self, debug=False):
         if(self.proxy_enabled):
-            self._connection = self.__connection__class(self.proxy_host,
-                                                        self.proxy_port)
+            self._connection = self._connection_class(
+                self.proxy_host,
+                self.proxy_port
+            )
+
             self._connection.set_tunnel(self.base_url)
         else:
-            self._connection = self.__connection__class(self.base_url)
+            self._connection = self._connection_class(self.base_url)
 
     def _connect(self):
         self._connection.connect()

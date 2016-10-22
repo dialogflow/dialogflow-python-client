@@ -94,7 +94,7 @@ class VoiceRequest(QueryRequest):
     def _prepage_begin_request_data(self):
         data = '--%s\r\n' % self.boundary
         data += 'Content-Disposition: form-data; name="request"\r\n'
-        data += "Content-Type: application/json\r\n\r\n"
+        data += 'Content-Type: application/json\r\n\r\n'
 
         data += json.dumps(
             {
@@ -111,14 +111,14 @@ class VoiceRequest(QueryRequest):
 
         data += '--%s\r\n' % self.boundary
         data += 'Content-Disposition: form-data; name="voiceData"\r\n'
-        data += "Content-Type: %s\r\n\r\n" % (self._audio_mime_type_prepare())
+        data += 'Content-Type: %s\r\n\r\n' % (self._audio_mime_type_prepare())
 
         return data
 
     def _audio_mime_type_prepare(self):
         current_audio_mime_type = self.audio_mime_type
         if current_audio_mime_type is None:
-            current_audio_mime_type = u"audio/wav"
+            current_audio_mime_type = 'audio/wav'
 
         return current_audio_mime_type
 
