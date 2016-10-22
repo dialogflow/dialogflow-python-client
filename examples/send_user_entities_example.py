@@ -48,5 +48,6 @@ def main():
 
     print 'Query response: ', (response.read())
 
+
 if __name__ == '__main__':
     main()

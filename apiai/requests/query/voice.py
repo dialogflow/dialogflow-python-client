@@ -17,24 +17,26 @@ else:
 
 
 class VoiceRequest(QueryRequest):
-    """VoiceRequest request class
+    """
 
-    Send voice data by chunks.
+        VoiceRequest request class
 
-    Basic Usage::
+        Send voice data by chunks.
 
-        >>> ...
-        >>> voice_request = ai.text_request()
-        >>> bytessize = 2048
-        >>>
-        >>> with open('log.raw', 'rb') as f:
-        >>>     data = f.read(bytessize)
-        >>>     while data:
-        >>>         request.send(data)
-        >>>         data = f.read(bytessize)
-        >>>
-        >>> request.getresponse()
-        <JSON response>
+        Basic Usage::
+
+            >>> ...
+            >>> voice_request = ai.text_request()
+            >>> bytessize = 2048
+            >>>
+            >>> with open('log.raw', 'rb') as f:
+            >>>     data = f.read(bytessize)
+            >>>     while data:
+            >>>         request.send(data)
+            >>>         data = f.read(bytessize)
+            >>>
+            >>> request.getresponse()
+            <JSON response>
     """
 
     def __init__(self, client_access_token, base_url, version, session_id):
@@ -52,7 +54,10 @@ class VoiceRequest(QueryRequest):
         """
             audio mime type, default value equal None. If value is None then
             uses 'audio/wav' mime type.
+
+            :rtype: str or unicode
         """
+
         return self._audio_mime_type
 
     @audio_mime_type.setter
@@ -61,10 +66,13 @@ class VoiceRequest(QueryRequest):
             audio mime type setter
             :type value: str or unicode
         """
+
         self._audio_mime_type = value
 
     def send(self, chunk):
-        """Send a given data chunk of voice data."""
+        """
+            Send a given data chunk of voice data.
+        """
 
         parts = []
 

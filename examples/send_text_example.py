@@ -25,12 +25,12 @@ def main():
 
     # request.session_id = "<SESSION ID, UNIQUE FOR EACH USER>"
 
-    # request.query = "Hello"
-    request.query = "Wann kann ich morgen surfen?"
+    request.query = "Hello"
 
     response = request.getresponse()
 
     print (response.read())
+
 
 if __name__ == '__main__':
     main()

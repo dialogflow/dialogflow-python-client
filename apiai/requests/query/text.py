@@ -6,18 +6,22 @@ import json
 
 
 class TextRequest(QueryRequest):
-    """TextRequest request class
+    """
+        TextRequest request class
 
-    Send simple text queries.
-    Query can be string or array of strings.
-
+        Send simple text queries.
+        Query can be string or array of strings.
     """
 
     @property
     def query(self):
-        """Query parameter, can be string or array of strings.
-        Default equal None, nut your should fill this field before send
-        request."""
+        """
+            Query parameter, can be string or array of strings.
+            Default equal None, nut your should fill this field before send
+            request.
+
+            :rtype: str or unicode
+        """
         return self._query
 
     @query.setter

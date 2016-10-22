@@ -13,6 +13,7 @@ except ImportError:
 
 CLIENT_ACCESS_TOKEN = '09604c7f91ce4cd8a4ede55eb5340b9d'
 
+
 class TestActions(unittest.TestCase):
     def setUp(self):
         self.ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
@@ -84,12 +85,13 @@ class TestActions(unittest.TestCase):
                     apiai.Entry('Ori', ['ori', 'Nori']),
                     apiai.Entry('bifur', ['Bofur', 'Bombur']),
                 ]
-                )
+            )
         ]
 
         response = self.load_text_request_with_quiery(query, entities=entities)
         self.assertTrue(response['result']['metadata']['intentName'] == 'hi dwarf')
         self.assertTrue(response['result']['fulfillment']['speech'] == 'hi Bilbo, I am Ori')
+
 
 if __name__ == '__main__':
     unittest.main()

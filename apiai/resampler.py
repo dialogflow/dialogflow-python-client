@@ -4,7 +4,6 @@ import numpy as np
 
 
 class Resampler(object):
-    """docstring for Resapler"""
     def __init__(self,
                  source_samplerate,
                  destination_samplerate=16000,
@@ -17,7 +16,6 @@ class Resampler(object):
         self.channels = channels
 
     def resample(self, frame, frame_count):
-
         nparray = np.fromstring(frame, dtype=self.dtype)
 
         scale = self.ratio
