@@ -54,7 +54,7 @@ class Request(object):
     def _prepare_proxy(self):
 
         self.proxy_enabled = False
-        if "https_proxy" in os.environ:
+        if "https_proxy" in os.environ and os.environ["https_proxy"]:
             self.proxy_enabled = True
             https_proxy = os.environ["https_proxy"]
 
