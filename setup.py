@@ -43,7 +43,7 @@ with open('HISTORY.rst', 'r') as f:
 
 setup(
     name='apiai',
-    version='1.0.5',
+    version='1.2.0',
     description=(
         'The API.AI iOS SDK makes it easy to integrate speech '
         'recognition with API.AI natural language processing '
