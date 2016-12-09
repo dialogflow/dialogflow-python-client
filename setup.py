@@ -8,7 +8,7 @@
 import sys
 import os
 
-import apiai
+# import apiai
 
 try:
     from setuptools import setup
@@ -31,6 +31,10 @@ REQUIRES = [
     'numpy'
 ]
 
+EXTRAS_REQUIRE = {
+    'numpy': ['numpy']
+}
+
 with open('README.rst', 'r') as f:
     README = f.read()
 
@@ -39,7 +43,7 @@ with open('HISTORY.rst', 'r') as f:
 
 setup(
     name='apiai',
-    version=apiai.__version__,
+    version='1.0.3',
     description=(
         'The API.AI iOS SDK makes it easy to integrate speech '
         'recognition with API.AI natural language processing '
@@ -52,6 +56,7 @@ setup(
     url='https://api.ai/',
     packages=PACKAGES,
     install_requires=REQUIRES,
+    # extras_require=EXTRAS_REQUIRE,
     package_data={'': ['LICENSE']},
     classifiers=(
         'Development Status :: 5 - Production/Stable',

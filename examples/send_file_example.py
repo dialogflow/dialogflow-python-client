@@ -14,7 +14,7 @@ except ImportError:
 
 from codecs import open
 
-CLIENT_ACCESS_TOKEN = '03cbf8fe4ebc4b928f99d6ba111f0976'
+CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
 
 
 def main():
@@ -38,6 +38,7 @@ def main():
     response = request.getresponse()
 
     print (response.read())
+
 
 if __name__ == '__main__':
     main()

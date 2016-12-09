@@ -12,8 +12,7 @@ except ImportError:
     )
     import apiai
 
-# CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
-CLIENT_ACCESS_TOKEN = '138c6f0337a34cfa8022c9aa29ade48a'
+CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
 
 
 def main():
@@ -23,7 +22,7 @@ def main():
 
     request.lang = 'de'  # optional, default value equal 'en'
 
-    # request.session_id = "<SESSION ID, UNIQUE FOR EACH USER>"
+    request.session_id = "<SESSION ID, UNIQUE FOR EACH USER>"
 
     request.query = "Hello"
 

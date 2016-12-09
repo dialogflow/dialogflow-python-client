@@ -5,6 +5,7 @@ from . import QueryRequest
 import sys
 import uuid
 import json
+import warnings
 
 PY3 = sys.version_info[0] == 3
 
@@ -18,13 +19,17 @@ else:
 
 class VoiceRequest(QueryRequest):
     """
+        .. deprecated:: 1.0.3
 
         VoiceRequest request class
 
         Send voice data by chunks.
 
-        Basic Usage::
+        This is method deprecated. Will be removed on 1 Feb 2016.
+        THis is method working only for for old paid plans and
+        doesn't work for all new users.
 
+        Basic Usage::
             >>> ...
             >>> voice_request = ai.text_request()
             >>> bytessize = 2048
@@ -40,6 +45,8 @@ class VoiceRequest(QueryRequest):
     """
 
     def __init__(self, client_access_token, base_url, version, session_id):
+        warnings.warn('VoiceRequest will be removed on 1 Feb 2016', DeprecationWarning)
+
         super(VoiceRequest, self).__init__(
             client_access_token,
             base_url,
@@ -116,7 +123,6 @@ class VoiceRequest(QueryRequest):
         )
 
         data += '\r\n'
-
         data += '--%s\r\n' % self.boundary
         data += 'Content-Disposition: form-data; name="voiceData"\r\n'
         data += 'Content-Type: %s\r\n\r\n' % (self._audio_mime_type_prepare())
@@ -131,7 +137,7 @@ class VoiceRequest(QueryRequest):
         return current_audio_mime_type
 
     def _prepage_end_request_data(self):
-        return "\r\n--%s--\r\n" % self.boundary
+        return '\r\n--%s--\r\n' % self.boundary
 
     def _beforegetresponce(self):
         self._connection.send(b('0\r\n\r\n'))
