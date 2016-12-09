@@ -16,7 +16,8 @@ import uuid
 from .requests import (
     VoiceRequest,
     TextRequest,
-    UserEntitiesRequest
+    UserEntitiesRequest,
+    events
 )
 
 DEFAULT_VERSION = '20150910'
@@ -145,5 +146,22 @@ class ApiAI(object):
             self._base_url,
             user_entities
         )
+
+        return request
+
+    def event_request(self, event=None):
+        """
+            :type event: events.Event
+            :rtype: events.EventRequest
+        """
+
+        request = events.EventRequest(
+            self.client_access_token,
+            self._base_url,
+            self._version,
+            self.session_id
+        )
+
+        request.event = event
 
         return request

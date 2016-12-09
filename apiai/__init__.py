@@ -11,6 +11,7 @@ from .requests.query import Entity
 
 from .requests import Request
 from .requests import QueryRequest
+from .requests import events
 
 from .apiai import ApiAI
 from .apiai import TextRequest
@@ -43,4 +44,5 @@ __all__ = [
     'UserEntityEntry',
     'VAD',
     'Resampler',
+    'events'
 ]

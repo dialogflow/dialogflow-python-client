@@ -4,6 +4,7 @@ from .request import Request
 from .query import QueryRequest
 from .query import TextRequest
 from .query import VoiceRequest
+from .query import events
 
 from .user_entities import UserEntitiesRequest
 
@@ -18,5 +19,8 @@ __all__ = [
     'QueryRequest',
     'TextRequest',
     'VoiceRequest',
-    'UserEntitiesRequest'
+    'UserEntitiesRequest',
+    'EventRequest',
+    'Event',
+    'events'
 ]

@@ -7,6 +7,8 @@ from .voice import VoiceRequest
 from .query import Entry
 from .query import Entity
 
+import events
+
 """
 apiai
 ~~~~~~~~~~~~~~~~
@@ -18,5 +20,6 @@ __all__ = [
     'TextRequest',
     'VoiceRequest',
     'Entry',
-    'Entity'
+    'Entity',
+    'events'
 ]

@@ -22,6 +22,7 @@ class TextRequest(QueryRequest):
 
             :rtype: str or unicode
         """
+
         return self._query
 
     @query.setter
