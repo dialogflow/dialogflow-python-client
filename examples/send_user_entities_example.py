@@ -37,7 +37,7 @@ def main():
 
     user_entities_response = user_entities_request.getresponse()
 
-    print 'Uplaod user entities response: ', (user_entities_response.read())
+    print 'Upload user entities response: ', (user_entities_response.read())
 
     request = ai.text_request()
 
