@@ -3,20 +3,21 @@
 import math
 import numpy as np
 
+
 class VAD(object):
     """docstring for VAD"""
-    def __init__(self, sampleRate = 16000):
+    def __init__(self, sampleRate=16000):
         super(VAD, self).__init__()
 
         self.sampleRate = sampleRate
-        
+
         self.reset()
 
     def reset(self):
         self.isFirst = True
 
-        self.energyMAX = 0.0;
-        self.energyMIN = 0.0;
+        self.energyMAX = 0.0
+        self.energyMIN = 0.0
 
         self.energyMIN_INITIAL = 0.1
 
@@ -41,7 +42,7 @@ class VAD(object):
         for value in frame:
             result += value * value
 
-        return math.sqrt(result / float(len(frame))) 
+        return math.sqrt(result / float(len(frame)))
 
     def processFrame(self, frame_input):
         state = 0
@@ -60,7 +61,7 @@ class VAD(object):
 
         if energy > self.energyMAX:
             self.energyMAX = energy
-        
+
         if energy < self.energyMIN:
             if energy < 0.025:
                 self.energyMIN = self.energyMIN_INITIAL
@@ -69,7 +70,7 @@ class VAD(object):
 
             self.resetDelta()
 
-        lam = (abs((self.energyMAX - self.energyMIN)) / (self.energyMAX + 0.01))
+        lam = abs(self.energyMAX - self.energyMIN) / (self.energyMAX + 0.01)
 
         threshold = (1. - lam) * self.energyMAX + lam * self.energyMIN
         self.threshold = threshold

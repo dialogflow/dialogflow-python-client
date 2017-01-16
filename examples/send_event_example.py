@@ -18,13 +18,11 @@ CLIENT_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
 def main():
     ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
-    request = ai.text_request()
+    request = ai.event_request(apiai.events.Event("my_custom_event"))
 
-    request.lang = 'de'  # optional, default value equal 'en'
+    request.lang = 'en'  # optional, default value equal 'en'
 
     request.session_id = "<SESSION ID, UNIQUE FOR EACH USER>"
-
-    request.query = "Hello"
 
     response = request.getresponse()
 

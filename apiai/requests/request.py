@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import urllib
+import os
 
-try: # Python 3
+try:  # Python 3
     from http.client import HTTPSConnection
 except ImportError:
     from httplib import HTTPSConnection
@@ -12,11 +13,12 @@ try:
 except ImportError:
     import urllib
 
+
 class Request(object):
     """Abstract request class
     Contain share information for all requests."""
 
-    __connection__class = HTTPSConnection
+    _connection_class = HTTPSConnection
 
     @property
     def client_access_token(self):
@@ -27,7 +29,12 @@ class Request(object):
     def client_access_token(self, client_access_token):
         self._client_access_token = client_access_token
 
-    def __init__(self, client_access_token, base_url, path, query_parameters = []):
+    def __init__(self,
+                 client_access_token,
+                 base_url,
+                 path,
+                 query_parameters=[]
+                 ):
         super(Request, self).__init__()
 
         self.base_url = base_url
@@ -35,31 +42,53 @@ class Request(object):
         self.query_parameters = query_parameters
 
         self.client_access_token = client_access_token
-        
+
+        self._prepare_proxy()
         self._prepare_request()
 
     def _prepare_entities(self):
-        if self.entities: 
+        if self.entities:
             return list(map(lambda x: x._to_dict(), self.entities))
         return None
 
+    def _prepare_proxy(self):
+
+        self.proxy_enabled = False
+
+        if os.environ.get("https_proxy"):
+            self.proxy_enabled = True
+            https_proxy = os.environ["https_proxy"]
+
+            # As proxies are set like "export https_proxy=$http_proxy"
+            # so it might start with 'https' or 'http'
+
+            https_proxy = https_proxy.replace("https://", "").rstrip("/")
+            https_proxy = https_proxy.replace("http://", "").rstrip("/")
+            (self.proxy_host, self.proxy_port) = https_proxy.split(":")
+            self.proxy_port = int(self.proxy_port)
+
     def _prepare_request(self, debug=False):
-        self._connection = self.__connection__class(self.base_url)
+        if(self.proxy_enabled):
+            self._connection = self._connection_class(
+                self.proxy_host,
+                self.proxy_port
+            )
 
-        # self._connection.set_debuglevel(1)
-
-        # if debug:
-        #     self._connection.debuglevel = 1
+            self._connection.set_tunnel(self.base_url)
+        else:
+            self._connection = self._connection_class(self.base_url)
 
     def _connect(self):
         self._connection.connect()
 
-        full_path = None
+        query = None
 
         try:
-            full_path = self.path + '?' + urllib.urlencode(self.query_parameters)
+            query = urllib.urlencode(self.query_parameters)
         except AttributeError:
-            full_path = self.path + '?' + urllib.parse.urlencode(self.query_parameters)
+            query = urllib.parse.urlencode(self.query_parameters)
+
+        full_path = self.path + '?' + query
 
         self._connection.putrequest('POST', full_path, skip_accept_encoding=1)
 
@@ -77,7 +106,7 @@ class Request(object):
 
         begin = self._prepage_begin_request_data()
 
-        if not begin is None:
+        if begin is not None:
             self.send(begin.encode('utf-8'))
 
     def send(self, chunk):
@@ -100,7 +129,7 @@ class Request(object):
 
         end = self._prepage_end_request_data()
 
-        if not end is None:
+        if end is not None:
             self.send(end.encode('utf-8'))
 
         self._beforegetresponce()

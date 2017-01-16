@@ -7,9 +7,10 @@ from ..query import Entry
 
 import json
 
+
 class UserEntity(Entity):
-    """UserEntity object used for upload user entities. 
-    Detail information about user entities you can see at our site 
+    """UserEntity object used for upload user entities.
+    Detail information about user entities you can see at our site
     https://docs.api.ai/docs/userentities"""
 
     @property
@@ -28,11 +29,12 @@ class UserEntity(Entity):
     @extend.setter
     def extend(self, extend):
         """extend parameter used definition user entities logic. If True then
-        uploaded user entities will be mixed with user entities specified in 
-        server side else currently uploaded entities witll uverride server entities."""
+        uploaded user entities will be mixed with user entities specified in
+        server side else currently uploaded entities witll uverride
+        server entities."""
         self._extend = extend
 
-    def __init__(self, name, entries, session_id = None, extend = False):
+    def __init__(self, name, entries, session_id=None, extend=False):
         super(UserEntity, self).__init__(name, entries)
 
         self._session_id = session_id
@@ -50,15 +52,16 @@ class UserEntity(Entity):
 
 
 class UserEntityEntry(Entry):
-    """UserEntityEntry object used for upload user entities. 
-    Detail information about user entities you can see at our site 
+    """UserEntityEntry object used for upload user entities.
+    Detail information about user entities you can see at our site
     https://docs.api.ai/docs/userentities"""
 
     pass
 
 
 class UserEntitiesRequest(Request):
-    """UserEntitiesRequest is request for upload user entities. Detail see http://docs.api.ai/"""
+    """UserEntitiesRequest is request for upload user entities.
+    Detail see http://docs.api.ai/"""
 
     @property
     def user_entities(self):
@@ -69,8 +72,11 @@ class UserEntitiesRequest(Request):
     def user_entities(self, user_entities):
         self._user_entities = user_entities
 
-    def __init__(self, client_access_token, base_url, user_entities = []):
-        super(UserEntitiesRequest, self).__init__(client_access_token, base_url, '/v1/userEntities', {})
+    def __init__(self, client_access_token, base_url, user_entities=[]):
+        super(UserEntitiesRequest, self).__init__(client_access_token,
+                                                  base_url,
+                                                  '/v1/userEntities',
+                                                  {})
 
         self._user_entities = user_entities
 
@@ -78,10 +84,10 @@ class UserEntitiesRequest(Request):
         return {
             'Content-Type': 'application/json; charset=utf-8',
             'Content-Length': len(self._prepage_end_request_data())
-            } 
+        }
 
     def _prepage_begin_request_data(self):
         return None
 
     def _prepage_end_request_data(self):
-        return json.dumps(map(lambda x: x._to_dict(), self._user_entities))
+        return json.dumps(list(map(lambda x: x._to_dict(), self._user_entities)))
