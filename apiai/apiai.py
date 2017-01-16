@@ -20,6 +20,8 @@ from .requests import (
     events
 )
 
+import warnings
+
 DEFAULT_VERSION = '20150910'
 
 
@@ -97,10 +99,16 @@ class ApiAI(object):
             Construct a VoiceRequest, prepare it.
             Fields of request default filled from `ApiAI` parameters
             (session_id, version, client_access_token).
+
+            This method is deprecated. Will be remove soon (1st feb 2017).
+            The request working only for old paid account.
+
             Returns `VoiceRequest` object.
 
             :rtype VoiceRequest:
         """
+
+        warnings.warn('This method is deprecated. Will be remove soon.', DeprecationWarning, stacklevel=2)
 
         request = VoiceRequest(
             self.client_access_token,
