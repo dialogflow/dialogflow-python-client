@@ -28,7 +28,7 @@ __author__ = "Dmitriy Kuragin"
 __copyright__ = "Copyright 2016 api.ai"
 __contributors__ = []
 __license__ = "Apache 2.0"
-__version__ = "1.2.2"
+__version__ = "1.2.3"
 
 __all__ = [
     'apiai',
