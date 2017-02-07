@@ -112,7 +112,7 @@ class Request(object):
     def send(self, chunk):
         """Send a given data chunk of voice data."""
 
-        if self._connection.sock is None:
+        if getattr(self._connection, 'sock', None) is None:
             self._connect()
 
         self._connection.send(chunk)
@@ -124,7 +124,7 @@ class Request(object):
         """Send all data and wait for response.
         """
 
-        if self._connection.sock is None:
+        if getattr(self._connection, 'sock', None) is None:
             self._connect()
 
         end = self._prepage_end_request_data()

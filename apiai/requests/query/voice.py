@@ -31,7 +31,7 @@ class VoiceRequest(QueryRequest):
 
         Basic Usage::
             >>> ...
-            >>> voice_request = ai.text_request()
+            >>> voice_request = ai.voice_request()
             >>> bytessize = 2048
             >>>
             >>> with open('log.raw', 'rb') as f:
