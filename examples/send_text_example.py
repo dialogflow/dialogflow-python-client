@@ -26,9 +26,11 @@ def main():
 
     request.query = "Hello"
 
-    response = request.getresponse()
+    response = request.get_response()
 
-    print (response.read())
+    print("status_code: {}".format(response.status_code))
+    print(response.body)
+    print(response.json)
 
 
 if __name__ == '__main__':

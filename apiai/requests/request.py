@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
+
 import urllib
 import os
 
@@ -12,6 +14,8 @@ try:
     import urllib.parse
 except ImportError:
     import urllib
+
+from ..response import Response
 
 
 class Request(object):
@@ -110,7 +114,9 @@ class Request(object):
             self.send(begin.encode('utf-8'))
 
     def send(self, chunk):
-        """Send a given data chunk of voice data."""
+        """
+            Send a given data chunk of voice data.
+        """
 
         if getattr(self._connection, 'sock', None) is None:
             self._connect()
@@ -121,7 +127,8 @@ class Request(object):
         pass
 
     def getresponse(self):
-        """Send all data and wait for response.
+        """
+            Send all data and wait for response.
         """
 
         if getattr(self._connection, 'sock', None) is None:
@@ -135,6 +142,20 @@ class Request(object):
         self._beforegetresponce()
 
         return self._connection.getresponse()
+
+    def get_response(self):
+        """
+            :rtype Response:
+        """
+
+        return Response(self.getresponse())
+
+    # def get_json_response(self):
+    #     response_body = self.getresponse().read()
+    #     if PY3:
+    #         response_body = response_body.decode('unicode-escape')
+
+    #     return json.loads(response_body)
 
     def _prepare_headers(self):
         raise NotImplementedError("Please Implement this method")
