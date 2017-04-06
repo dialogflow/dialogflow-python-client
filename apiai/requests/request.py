@@ -150,13 +150,6 @@ class Request(object):
 
         return Response(self.getresponse())
 
-    # def get_json_response(self):
-    #     response_body = self.getresponse().read()
-    #     if PY3:
-    #         response_body = response_body.decode('unicode-escape')
-
-    #     return json.loads(response_body)
-
     def _prepare_headers(self):
         raise NotImplementedError("Please Implement this method")
 

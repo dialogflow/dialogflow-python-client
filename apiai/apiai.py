@@ -37,7 +37,8 @@ class ApiAI(object):
             >>> text_request = ai.text_request()
             >>> ...
 
-        :param client_access_token: client access token provided by https://api.ai/
+        :param client_access_token: client access token provided by
+        https://api.ai/
         :type client_access_token: str or unicde
     """
 
@@ -108,7 +109,11 @@ class ApiAI(object):
             :rtype VoiceRequest:
         """
 
-        warnings.warn('This method is deprecated. Will be remove soon.', DeprecationWarning, stacklevel=2)
+        warnings.warn(
+            'This method is deprecated. Will be remove soon.',
+            DeprecationWarning,
+            stacklevel=2
+        )
 
         request = VoiceRequest(
             self.client_access_token,

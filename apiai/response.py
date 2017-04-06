@@ -14,8 +14,9 @@ class Response(object):
     """
     Response from api.ai
 
-    :type original_response: http.client.HTTPResponse or http.client.HTTPSResponse
-        or httplib.HTTPResponse or httplib.HTTPSResponse
+    :type original_response: http.client.HTTPResponse or \
+        http.client.HTTPSResponse or httplib.HTTPResponse or \
+        httplib.HTTPSResponse
     """
 
     def __init__(self, original_response):
@@ -37,8 +38,9 @@ class Response(object):
     @property
     def original_response(self):
         """
-        :rtype http.client.HTTPResponse or http.client.HTTPSResponse
-        or httplib.HTTPResponse or httplib.HTTPSResponse:
+        :rtype: original_response: http.client.HTTPResponse or \
+            http.client.HTTPSResponse or httplib.HTTPResponse or \
+            httplib.HTTPSResponse
         """
         return self._original_response
 
@@ -51,14 +53,23 @@ class Response(object):
 
     @property
     def headers(self):
+        """
+        :rtype: dict
+        """
         return self._headers
 
     @property
     def body(self):
+        """
+        :rtype: str or unicode
+        """
         return self._body
 
     @property
     def json(self):
+        """
+        :rtype: dict or list
+        """
         if self._json is None:
             self._json = json.loads(self.body)
         return self._json

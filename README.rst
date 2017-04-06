@@ -4,8 +4,8 @@ api.ai: Python SDK for `API.AI <http://api.ai>`_
 .. image:: https://badge.fury.io/py/apiai.svg
     :target: http://badge.fury.io/py/apiai
 
-.. image:: https://travis-ci.org/api-ai/api-ai-python.svg
-    :target: https://travis-ci.org/api-ai/api-ai-python
+.. image:: https://travis-ci.org/api-ai/apiai-python-client.svg
+    :target: https://travis-ci.org/api-ai/apiai-python-client
 
 
 Overview
@@ -50,7 +50,7 @@ or install it from repo:
 
 .. code-block:: bash
 
-    $ pip install https://github.com/api-ai/api-ai-python.git
+    $ pip install https://github.com/api-ai/apiai-python-client.git
 
 You might run into problems because some dependencies in your python environment are missing. You need to install numpy (which is available in almost all package managers). For running the examples you also need python audio.
 
